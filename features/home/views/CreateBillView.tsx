@@ -29,13 +29,22 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
 
 
 const CreateBillView = () => {
     const [customerAtomValue, setCustomerAtom] = useAtom(customerAtom)
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
-    const structuredData = customerAtomValue.map(name => ({
+    const structuredData = placeholder.map(name => ({
         name: name,
         items: [
             {
@@ -350,7 +359,7 @@ const CreateBillView = () => {
                                         {/* <CardDescription>Card Description</CardDescription> */}
                                     </CardHeader>
                                     <CardContent>
-                                        {customerAtomValue.map((item: string, index: number) => (
+                                        {placeholder.map((item: string, index: number) => (
 
                                             <div className="flex items-center gap-2 py-2">
                                                 <Checkbox id="terms" />
@@ -392,16 +401,27 @@ const CreateBillView = () => {
                 </Accordion>
             </div>
 
-            <Button
-                variant="secondary"
-                // size="icon"
-                className="shrink-0 rounded-full"
-            // onClick={() => handleAddItem(indexUser)}
-            >
-                Tambah bill "Bagi sebagian"
-            </Button>
 
-            <div className='flex gap-2 w-full flex-col'>
+            <div className='flex gap-2 w-full flex-col px-2'>
+                <DropdownMenu >
+                    <DropdownMenuTrigger asChild>
+                        <Button
+                            // variant="secondary"
+                            size="icon"
+                            className="shrink-0 rounded-full "
+                        // onClick={() => handleAddItem(indexUser)}
+                        >
+                            <Plus className="h-4 w-4" />
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                        <DropdownMenuLabel>Type bills</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem>Bagi Sebagian</DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+
+
                 <Button
                     disabled={isSubmitDisabled}
                 >
