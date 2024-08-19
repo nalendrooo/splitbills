@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { customerAtom } from '@/lib/atom'
 import { useAtom } from 'jotai'
-import { Minus, Plus, Scale } from 'lucide-react'
+import { Minus, Plus, Scale, Users } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { ICustomer, IItem } from '../interface'
 import { placeholder } from "../constants/constant"
@@ -19,13 +19,23 @@ import {
     AvatarFallback,
     AvatarImage,
 } from "@/components/ui/avatar"
+import { Separator } from "@/components/ui/separator"
+import { Checkbox } from "@/components/ui/checkbox"
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card"
 
 
 const CreateBillView = () => {
     const [customerAtomValue, setCustomerAtom] = useAtom(customerAtom)
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
-    const structuredData = placeholder.map(name => ({
+    const structuredData = customerAtomValue.map(name => ({
         name: name,
         items: [
             {
@@ -119,16 +129,97 @@ const CreateBillView = () => {
     return (
         <div className='min-h-screen flex p-4 gap-2 flex-col justify-between'>
 
-            <Accordion type='multiple' className="w-full px-2">
-                {customer.map((cust, indexUser) => (
+            <div>
+                <Accordion type='multiple' className="w-full px-2">
+                    {customer.map((cust, indexUser) => (
 
-                    <AccordionItem value={indexUser.toString()} key={indexUser}>
+                        <AccordionItem value={indexUser.toString()} key={indexUser}>
+                            <AccordionTrigger className='hover:no-underline'>
+                                <Avatar>
+                                    {/* <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" /> */}
+                                    <AvatarFallback>{cust.name[0] + cust.name[1]}</AvatarFallback>
+                                </Avatar>
+                                <Label className='text-xl'>{cust.name}</Label>
+                            </AccordionTrigger>
+                            <AccordionContent >
+
+                                <div className='flex flex-col gap-2 '>
+
+                                    <div className='flex flex-col gap-2'>
+
+                                        {cust.items.map((item: IItem, indexItem: number) => (
+
+                                            <div className="flex items-end gap-2" key={indexItem}>
+
+                                                <div>
+                                                    <Input
+                                                        placeholder='Matcha Latte'
+                                                        value={item.item}
+                                                        onChange={(e) => handleInputChange(indexUser, indexItem, 'item', e.target.value)}
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <Input
+                                                        value={item.price}
+                                                        onChange={(e) => handleInputChange(indexUser, indexItem, 'price', e.target.value)}
+                                                    />
+                                                </div>
+
+                                                <Button
+                                                    size="icon"
+                                                    variant="destructive"
+                                                    className="shrink-0 rounded-full "
+                                                    onClick={() => handleDeleteItem(indexUser, indexItem)}
+                                                    disabled={cust.items.length === 1}
+                                                >
+                                                    <Minus className="h-6 w-6" />
+                                                </Button>
+
+
+                                            </div>
+                                        ))}
+
+
+                                    </div>
+                                    <div className='flex w-full items-center justify-center '>
+
+                                        <Button
+                                            variant="outline"
+                                            size="icon"
+                                            className="shrink-0 rounded-full"
+                                            onClick={() => handleAddItem(indexUser)}
+                                        >
+                                            <Plus className="h-4 w-4" />
+                                        </Button>
+                                    </div>
+
+
+
+
+                                </div>
+                            </AccordionContent>
+                        </AccordionItem>
+                    ))}
+
+
+
+
+
+                </Accordion>
+
+                <Accordion type='multiple' className="w-full px-2">
+                    <AccordionItem value={'new'} key={210}>
                         <AccordionTrigger className='hover:no-underline'>
-                            <Avatar>
-                                {/* <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" /> */}
-                                <AvatarFallback>{cust.name[0] + cust.name[1]}</AvatarFallback>
-                            </Avatar>
-                            <Label className='text-xl'>{cust.name}</Label>
+                            <Button
+                                variant="outline"
+                                size="icon"
+                                className="shrink-0 rounded-full"
+                            // onClick={() => handleAddItem(indexUser)}
+                            >
+                                <Scale className="h-4 w-4" />
+                            </Button>
+                            <Label className='text-xl'>Bagi Rata</Label>
+
                         </AccordionTrigger>
                         <AccordionContent >
 
@@ -136,37 +227,37 @@ const CreateBillView = () => {
 
                                 <div className='flex flex-col gap-2'>
 
-                                    {cust.items.map((item: IItem, indexItem: number) => (
+                                    {/* {cust.items.map((item: IItem, indexItem: number) => ( */}
 
-                                        <div className="flex items-end gap-2" key={indexItem}>
+                                    <div className="flex items-end gap-2" key={0}>
 
-                                            <div>
-                                                <Input
-                                                    placeholder='Matcha Latte'
-                                                    value={item.item}
-                                                    onChange={(e) => handleInputChange(indexUser, indexItem, 'item', e.target.value)}
-                                                />
-                                            </div>
-                                            <div>
-                                                <Input
-                                                    value={item.price}
-                                                    onChange={(e) => handleInputChange(indexUser, indexItem, 'price', e.target.value)}
-                                                />
-                                            </div>
-
-                                            <Button
-                                                size="icon"
-                                                variant="destructive"
-                                                className="shrink-0 rounded-full "
-                                                onClick={() => handleDeleteItem(indexUser, indexItem)}
-                                                disabled={cust.items.length === 1}
-                                            >
-                                                <Minus className="h-6 w-6" />
-                                            </Button>
-
-
+                                        <div>
+                                            <Input
+                                                placeholder='Pajak'
+                                            // value={item.item}
+                                            // onChange={(e) => handleInputChange(indexUser, indexItem, 'item', e.target.value)}
+                                            />
                                         </div>
-                                    ))}
+                                        <div>
+                                            <Input
+                                            // value={item.price}
+                                            // onChange={(e) => handleInputChange(indexUser, indexItem, 'price', e.target.value)}
+                                            />
+                                        </div>
+
+                                        <Button
+                                            size="icon"
+                                            variant="destructive"
+                                            className="shrink-0 rounded-full "
+                                        // onClick={() => handleDeleteItem(indexUser, indexItem)}
+                                        // disabled={cust.items.length === 1}
+                                        >
+                                            <Minus className="h-6 w-6" />
+                                        </Button>
+
+
+                                    </div>
+                                    {/* ))} */}
 
 
                                 </div>
@@ -176,7 +267,7 @@ const CreateBillView = () => {
                                         variant="outline"
                                         size="icon"
                                         className="shrink-0 rounded-full"
-                                        onClick={() => handleAddItem(indexUser)}
+                                    // onClick={() => handleAddItem(indexUser)}
                                     >
                                         <Plus className="h-4 w-4" />
                                     </Button>
@@ -188,165 +279,133 @@ const CreateBillView = () => {
                             </div>
                         </AccordionContent>
                     </AccordionItem>
-                ))}
+                    <AccordionItem value={'news'} key={0}>
+                        <AccordionTrigger className='hover:no-underline'>
+                            <Button
+                                variant="outline"
+                                size="icon"
+                                className="shrink-0 rounded-full"
+                            // onClick={() => handleAddItem(indexUser)}
+                            >
+                                <Users className="h-4 w-4" />
+                            </Button>
+                            <Label className='text-xl'>Bagi Sebagian 1</Label>
+
+                        </AccordionTrigger>
+                        <AccordionContent >
+
+                            <div className='flex flex-col gap-2 '>
+
+                                <div className='flex flex-col gap-2'>
+
+                                    {/* {cust.items.map((item: IItem, indexItem: number) => ( */}
+
+                                    <div className="flex items-end gap-2" key={1212}>
+
+                                        <div>
+                                            <Input
+                                                placeholder='Bensin'
+                                            // value={item.item}
+                                            // onChange={(e) => handleInputChange(indexUser, indexItem, 'item', e.target.value)}
+                                            />
+                                        </div>
+                                        <div>
+                                            <Input
+                                            // value={item.price}
+                                            // onChange={(e) => handleInputChange(indexUser, indexItem, 'price', e.target.value)}
+                                            />
+                                        </div>
+
+                                        <Button
+                                            size="icon"
+                                            variant="destructive"
+                                            className="shrink-0 rounded-full "
+                                        // onClick={() => handleDeleteItem(indexUser, indexItem)}
+                                        // disabled={cust.items.length === 1}
+                                        >
+                                            <Minus className="h-6 w-6" />
+                                        </Button>
 
 
-
-
-
-            </Accordion>
-
-            <Accordion type='multiple' className="w-full px-2">
-                <AccordionItem value={'new'} key={210}>
-                    <AccordionTrigger className='hover:no-underline'>
-                        <Button
-                            variant="outline"
-                            size="icon"
-                            className="shrink-0 rounded-full"
-                        // onClick={() => handleAddItem(indexUser)}
-                        >
-                            <Scale className="h-4 w-4" />
-                        </Button>
-                        <Label className='text-xl'>Bagi Rata</Label>
-
-                    </AccordionTrigger>
-                    <AccordionContent >
-
-                        <div className='flex flex-col gap-2 '>
-
-                            <div className='flex flex-col gap-2'>
-
-                                {/* {cust.items.map((item: IItem, indexItem: number) => ( */}
-
-                                <div className="flex items-end gap-2" key={0}>
-
-                                    <div>
-                                        <Input
-                                            placeholder='Matcha Latte'
-                                        // value={item.item}
-                                        // onChange={(e) => handleInputChange(indexUser, indexItem, 'item', e.target.value)}
-                                        />
                                     </div>
-                                    <div>
-                                        <Input
-                                        // value={item.price}
-                                        // onChange={(e) => handleInputChange(indexUser, indexItem, 'price', e.target.value)}
-                                        />
-                                    </div>
-
-                                    <Button
-                                        size="icon"
-                                        variant="destructive"
-                                        className="shrink-0 rounded-full "
-                                    // onClick={() => handleDeleteItem(indexUser, indexItem)}
-                                    // disabled={cust.items.length === 1}
-                                    >
-                                        <Minus className="h-6 w-6" />
-                                    </Button>
+                                    {/* ))} */}
 
 
                                 </div>
-                                {/* ))} */}
-
-
-                            </div>
-                            <div className='flex w-full items-center justify-center '>
-
-                                <Button
-                                    variant="outline"
-                                    size="icon"
-                                    className="shrink-0 rounded-full"
-                                // onClick={() => handleAddItem(indexUser)}
-                                >
-                                    <Plus className="h-4 w-4" />
-                                </Button>
-                            </div>
-
-
-
-
-                        </div>
-                    </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value={'news'} key={0}>
-                    <AccordionTrigger className='hover:no-underline'>
-                        <Button
-                            variant="outline"
-                            size="icon"
-                            className="shrink-0 rounded-full"
-                        // onClick={() => handleAddItem(indexUser)}
-                        >
-                            <Plus className="h-4 w-4" />
-                        </Button>
-                        <Label className='text-xl'>Bagi Sebagian</Label>
-
-                    </AccordionTrigger>
-                    <AccordionContent >
-
-                        <div className='flex flex-col gap-2 '>
-
-                            <div className='flex flex-col gap-2'>
-
-                                {/* {cust.items.map((item: IItem, indexItem: number) => ( */}
-
-                                <div className="flex items-end gap-2" key={1212}>
-
-                                    <div>
-                                        <Input
-                                            placeholder='Matcha Latte'
-                                        // value={item.item}
-                                        // onChange={(e) => handleInputChange(indexUser, indexItem, 'item', e.target.value)}
-                                        />
-                                    </div>
-                                    <div>
-                                        <Input
-                                        // value={item.price}
-                                        // onChange={(e) => handleInputChange(indexUser, indexItem, 'price', e.target.value)}
-                                        />
-                                    </div>
+                                <div className='flex w-full items-center justify-center '>
 
                                     <Button
+                                        variant="outline"
                                         size="icon"
-                                        variant="destructive"
-                                        className="shrink-0 rounded-full "
-                                    // onClick={() => handleDeleteItem(indexUser, indexItem)}
-                                    // disabled={cust.items.length === 1}
+                                        className="shrink-0 rounded-full"
+                                    // onClick={() => handleAddItem(indexUser)}
                                     >
-                                        <Minus className="h-6 w-6" />
+                                        <Plus className="h-4 w-4" />
+                                    </Button>
+                                </div>
+                                <Card>
+                                    <CardHeader>
+                                        {/* <CardTitle>Tambah penerima</CardTitle> */}
+                                        <h2 className="text-lg font-semibold">Pilih penerima bill</h2>
+                                        {/* <CardDescription>Card Description</CardDescription> */}
+                                    </CardHeader>
+                                    <CardContent>
+                                        {customerAtomValue.map((item: string, index: number) => (
+
+                                            <div className="flex items-center gap-2 py-2">
+                                                <Checkbox id="terms" />
+                                                <label
+                                                    htmlFor="terms"
+                                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                                >
+                                                    {item}
+                                                </label>
+                                            </div>
+                                        ))}
+                                    </CardContent>
+
+                                </Card>
+
+                                <Separator />
+
+                                <div className='flex w-full mt-4 items-center justify-center gap-2'>
+
+                                    <Button
+                                        variant="destructive"
+                                        // size="icon"
+                                        className="shrink-0 rounded-full"
+                                    // onClick={() => handleAddItem(indexUser)}
+                                    >
+                                        Hapus bill
                                     </Button>
 
-
                                 </div>
-                                {/* ))} */}
+
+
 
 
                             </div>
-                            <div className='flex w-full items-center justify-center '>
-
-                                <Button
-                                    variant="outline"
-                                    size="icon"
-                                    className="shrink-0 rounded-full"
-                                // onClick={() => handleAddItem(indexUser)}
-                                >
-                                    <Plus className="h-4 w-4" />
-                                </Button>
-                            </div>
+                        </AccordionContent>
+                    </AccordionItem>
 
 
+                </Accordion>
+            </div>
 
-
-                        </div>
-                    </AccordionContent>
-                </AccordionItem>
-
-            </Accordion>
+            <Button
+                variant="secondary"
+                // size="icon"
+                className="shrink-0 rounded-full"
+            // onClick={() => handleAddItem(indexUser)}
+            >
+                Tambah bill "Bagi sebagian"
+            </Button>
 
             <div className='flex gap-2 w-full flex-col'>
                 <Button
                     disabled={isSubmitDisabled}
                 >
-                    Buat Bill Sekarang!
+                    Buat Bills Sekarang!
                 </Button>
                 <Button
                     variant="outline"
