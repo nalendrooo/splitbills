@@ -7,14 +7,13 @@ import { useAtom, useAtomValue } from 'jotai'
 import { customerAtom } from '@/lib/atom'
 
 const Home = () => {
-  // const [customer] = useAtom(customerAtom)
-  // console.log(customer)
   const [customer] = useAtom(customerAtom)
 
   return (
     <div className='max-w-xl mx-auto'>
       <Header />
-      {customer.length > 1 ? <CreateBillView /> : <AddPeopleView />}
+      {/* {customer.length > 1 ? <CreateBillView /> : <AddPeopleView />} */}
+      <CreateBillView />
     </div>
 
   )
