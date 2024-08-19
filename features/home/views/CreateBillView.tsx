@@ -44,7 +44,7 @@ const CreateBillView = () => {
     const [customerAtomValue, setCustomerAtom] = useAtom(customerAtom)
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
-    const structuredData = placeholder.map(name => ({
+    const structuredData = customerAtomValue.map(name => ({
         name: name,
         items: [
             {
@@ -359,7 +359,7 @@ const CreateBillView = () => {
                                         {/* <CardDescription>Card Description</CardDescription> */}
                                     </CardHeader>
                                     <CardContent>
-                                        {placeholder.map((item: string, index: number) => (
+                                        {customerAtomValue.map((item: string, index: number) => (
 
                                             <div className="flex items-center gap-2 py-2">
                                                 <Checkbox id="terms" />

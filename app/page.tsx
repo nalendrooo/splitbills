@@ -12,8 +12,8 @@ const Home = () => {
   return (
     <div className='max-w-xl mx-auto'>
       <Header />
-      {/* {customer.length > 1 ? <CreateBillView /> : <AddPeopleView />} */}
-      <CreateBillView />
+      {customer.length > 1 ? <CreateBillView /> : <AddPeopleView />}
+      {/* <CreateBillView /> */}
     </div>
 
   )
