@@ -110,7 +110,7 @@ const FormAddPeopleDrawer = () => {
                                 <div className='max-w-sm gap-2 flex flex-wrap justify-center items-center pb-4'>
                                     {users.map((item, index) => (
                                         <>
-                                            <AlertDialog>
+                                            <AlertDialog key={index}>
                                                 <AlertDialogTrigger>
                                                     <Badge
                                                         variant={selectedUser.index === index ? 'destructive' : 'default'}
@@ -147,7 +147,7 @@ const FormAddPeopleDrawer = () => {
                                 <div className='gap-2 flex flex-col'>
 
                                     {/* {input.map((item, index) => ( */}
-                                    <div className="flex items-center justify-center gap-2" key={0}>
+                                    <div className="flex items-center justify-center gap-2" >
                                         <Input
                                             placeholder='Nama temenmu...'
                                             type='text'
