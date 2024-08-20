@@ -8,3 +8,8 @@ export interface ICustomer {
     items: IItem[];
 }
 
+export interface IForSome {
+    items: IItem[];
+    customers: number[];
+}
+

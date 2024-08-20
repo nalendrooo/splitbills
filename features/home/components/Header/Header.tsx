@@ -13,7 +13,6 @@ import {
 const Header = () => {
     return (
         <div className='flex justify-between p-2 bg-slate-400 items-center'>
-            {/* <div /> */}
 
             <Menubar >
                 <MenubarMenu >

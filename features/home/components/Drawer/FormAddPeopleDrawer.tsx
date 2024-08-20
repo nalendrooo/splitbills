@@ -1,8 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Minus, Plus } from "lucide-react"
 import {
     Drawer,
     DrawerClose,
@@ -14,13 +12,14 @@ import {
     DrawerTrigger,
 } from "@/components/ui/drawer"
 import { Input } from '@/components/ui/input'
+import { Minus, Plus } from "lucide-react"
+import { useState } from 'react'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { placeholder } from '../../constants/constant'
-import { useAtom, useSetAtom } from 'jotai'
-import { customerAtom } from '@/lib/atom'
+import { usersAtom } from '@/lib/atom'
+import { useSetAtom } from 'jotai'
 
 const FormAddPeopleDrawer = () => {
-    const [customer, setCustomer] = useAtom(customerAtom)
+    const setUsers = useSetAtom(usersAtom)
     const [input, setInput] = useState<string[]>([''])
 
     const handleInputChange = (index: number, value: string) => {
@@ -46,28 +45,26 @@ const FormAddPeopleDrawer = () => {
     }
 
     return (
-        <Drawer onClose={() => setInput([''])}>
+        <Drawer >
             <DrawerTrigger asChild>
-                <Button>Tambah orang</Button>
+                <Button>Tambah penerima dulu!</Button>
             </DrawerTrigger>
 
-            <DrawerContent>
-                <div className="mx-auto max-h-[500px] w-full max-w-sm overflow-scroll">
+            <DrawerContent >
+
+                <div className="mx-auto w-full d max-w-sm ">
                     <DrawerHeader>
                         <DrawerTitle>Yuk, Tambahin temenmu dulu!</DrawerTitle>
                         <DrawerDescription>Masukin temenmu yang jadi penerima splitbill.</DrawerDescription>
                     </DrawerHeader>
 
-                    <div className="p-4 overflow-scroll">
-                        <ScrollArea className="max-h-[120px]">
-
-
+                    <div className="p-4 ">
+                        <ScrollArea type='scroll' className="max-h-72 overflow-scroll rounded-md border p-4">
                             <div className='gap-2 flex flex-col'>
 
                                 {input.map((item, index) => (
                                     <div className="flex items-center justify-center gap-2" key={index}>
                                         <Input
-                                            // placeholder={placeholder[index]}
                                             placeholder='Nama temenmu...'
                                             type='text'
                                             value={item}
@@ -85,10 +82,11 @@ const FormAddPeopleDrawer = () => {
                                     </div>
                                 ))}
 
-
                             </div>
 
                         </ScrollArea>
+
+
                         <div className="mt-4 h-[120px]">
                             <div className="flex items-center justify-center space-x-2">
 
@@ -116,7 +114,7 @@ const FormAddPeopleDrawer = () => {
                     <DrawerFooter>
                         <Button
                             disabled={isDisabled()}
-                            onClick={() => setCustomer(input)}>Submit</Button>
+                            onClick={() => setUsers(input)}>Submit</Button>
                         <DrawerClose asChild >
                             <Button variant="outline" onClick={() => setInput([''])}>Gak jadi!</Button>
                         </DrawerClose>

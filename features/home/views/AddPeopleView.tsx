@@ -3,8 +3,7 @@ import FormAddPeopleDrawer from '../components/Drawer/FormAddPeopleDrawer'
 
 const AddPeopleView = () => {
     return (
-
-        <div className='min-h-screen flex justify-center items-center gap-2'>
+        <div className='flex justify-center items-center gap-2 min-h-screen'>
             <FormAddPeopleDrawer />
         </div >
 
