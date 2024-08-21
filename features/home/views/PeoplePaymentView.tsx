@@ -55,7 +55,7 @@ const PeoplePaymentView = () => {
                                     <p className='text-sm font-bold'>Jumlah pengeluaran tiap orang tidak termasuk kembalian!</p>
                                 </AlertTitle>
                                 <AlertDescription>
-                                    <p className='text-xs'>Contoh: <span style={{ fontWeight: 'bold', textDecoration: 'underline' }}>{placeholder2[0]}</span> mengeluarkan <span style={{ fontStyle: 'italic' }}>Rp. 100.000</span> dan mendapat kembalian <span style={{ fontStyle: 'italic' }}>Rp. 20.000</span></p>
+                                    <p className='text-xs'>Contoh: <span style={{ fontWeight: 'bold', textDecoration: 'underline' }}>{users[0]}</span> mengeluarkan <span style={{ fontStyle: 'italic' }}>Rp. 100.000</span> dan mendapat kembalian <span style={{ fontStyle: 'italic' }}>Rp. 20.000</span></p>
                                 </AlertDescription>
                                 <AlertDescription>
                                     <p className='text-xs ' style={{ marginBlockStart: '0.5rem' }}>Maka inputkan <span style={{ fontStyle: 'italic' }}>Rp. 80.000</span></p>
