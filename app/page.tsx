@@ -9,9 +9,9 @@ import { useAtomValue } from 'jotai'
 
 const Home = () => {
   const users = useAtomValue(usersAtom)
-console.log(users)
+
   return (
-    <div className='max-w-sm mx-auto min-h-screen'>
+    <div className='max-w-sm mx-auto'>
       <Header />
       {users.length > 1 ? <CreateBillView /> : <AddPeopleView />}
     </div>

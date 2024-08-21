@@ -1,5 +1,17 @@
 'use client'
 
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { Badge } from "@/components/ui/badge"
 import { Button } from '@/components/ui/button'
 import {
     Drawer,
@@ -12,29 +24,10 @@ import {
     DrawerTrigger,
 } from "@/components/ui/drawer"
 import { Input } from '@/components/ui/input'
-import { Minus, Plus } from "lucide-react"
-import { useState } from 'react'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import { usersAtom } from '@/lib/atom'
-import { useAtom, useSetAtom } from 'jotai'
-import { Badge } from "@/components/ui/badge"
-import { placeholder, placeholder2 } from '../../constants/constant'
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+import { useSetAtom } from 'jotai'
+import { Plus } from "lucide-react"
+import { useState } from 'react'
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
@@ -57,15 +50,6 @@ const FormAddPeopleDrawer = () => {
 
         setInput(value)
     }
-
-    // const handleDeleteInput = (index: number) => {
-    //     const newInput = input.filter((_, i) => i !== index)
-    //     setInput(newInput)
-    // }
-
-    // const isDisabled = () => {
-    //     return input.length <= 1 || input.some(item => item === '')
-    // }
 
     const handleSubmit = () => {
         setUsersAtom(users)
@@ -93,21 +77,22 @@ const FormAddPeopleDrawer = () => {
     return (
         <>
 
-            <Drawer>
+            <Drawer >
                 <DrawerTrigger asChild>
                     <Button>Tambah penerima dulu!</Button>
                 </DrawerTrigger>
 
                 <DrawerContent >
 
-                    <div className="mx-auto min-w-sm max-w-sm">
+                    <div className="mx-auto min-w-sm max-w-sm flex  flex-col " style={{ minHeight: '80vh ' }}>
                         <DrawerHeader>
                             <DrawerTitle>Yuk, Tambahin temenmu dulu!</DrawerTitle>
                             <DrawerDescription>Masukin temenmu yang jadi penerima splitbill.</DrawerDescription>
                         </DrawerHeader>
+
                         <div className="p-4 ">
                             <div className="rounded-md border p-4 gap-2  flex flex-col ">
-                                <div className='max-w-sm gap-2 flex flex-wrap justify-center items-center pb-4'>
+                                <div className='max-w-sm  gap-2 flex justify-center items-center pb-4' style={{ flexWrap: 'wrap' }}>
                                     {users.map((item, index) => (
                                         <>
                                             <AlertDialog key={index}>
@@ -173,6 +158,14 @@ const FormAddPeopleDrawer = () => {
 
                             </div>
 
+                            {users.length === 1 &&
+                                <Alert className='mt-4'>
+                                    <AlertDescription>
+                                        <p className='text-xs'>Minimal 2 temen dulu buat lanjut!</p>
+                                    </AlertDescription>
+                                </Alert>
+                            }
+
                             {users.length > 0 &&
                                 <Alert className='mt-4'>
                                     <AlertTitle>
@@ -181,66 +174,21 @@ const FormAddPeopleDrawer = () => {
                                     <AlertDescription>
                                         <p className='text-xs'>Klik nama temen kamu yang mau dihapus, terus "Ya"</p>
                                     </AlertDescription>
-                                </Alert>}
+                                </Alert>
+                            }
 
-                        </div>
-
-                        {/* <div className="p-4 ">
-                        <ScrollArea type='scroll' className="max-h-72 overflow-scroll rounded-md border p-4">
-                            <div className='gap-2 flex flex-col'>
-
-                                {input.map((item, index) => (
-                                    <div className="flex items-center justify-center gap-2" key={index}>
-                                        <Input
-                                            placeholder='Nama temenmu...'
-                                            type='text'
-                                            value={item}
-                                            onChange={e => handleInputChange(index, e.target.value)}
-                                        />
-                                        <Button
-                                            variant="destructive"
-                                            size="icon"
-                                            className=" shrink-0 rounded-full"
-                                            onClick={() => handleDeleteInput(index)}
-                                            disabled={input.length === 1}
-                                        >
-                                            <Minus className="h-4 w-4" />
-                                        </Button>
-                                    </div>
-                                ))}
-
-                            </div>
-
-                        </ScrollArea>
-
-
-                        <div className="mt-4 h-[120px]">
-                            <div className="flex items-center justify-center ">
-
-                                <Button
-                                    variant="outline"
-                                    size="icon"
-                                    className="shrink-0 rounded-full"
-                                    onClick={() => setInput(prev => [...prev, ''])}
-                                >
-                                    <Plus className="h-4 w-4" />
-                                </Button>
-                            </div>
-                        </div>
-                    </div> */}
-
-                        <div className="flex-1 text-center">
-                            <div className="text-7xl font-bold tracking-tighter" style={{ fontSize: '5rem', fontWeight: 'bold' }}>
-                                {users.length}
-                            </div>
-                            <div className="text-[0.70rem] uppercase text-muted-foreground">
-                                Jumlah temen kamu
-                            </div>
                         </div>
 
                         <DrawerFooter>
+                            <div className="flex-1 text-center">
+                                <div className="text-7xl font-bold tracking-tighter" style={{ fontSize: '5rem', fontWeight: 'bold' }}>
+                                    {users.length}
+                                </div>
+                                <div className="text-[0.70rem] uppercase text-muted-foreground">
+                                    Jumlah temen kamu.
+                                </div>
+                            </div>
                             <Button
-                                // disabled={isDisabled()}
                                 disabled={users.length < 2}
                                 onClick={handleSubmit}
                             >Submit</Button>
