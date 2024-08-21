@@ -19,6 +19,7 @@ import { initialAlreadyPaid, placeholder2 } from '../constants/constant'
 import { useAtom, useAtomValue } from 'jotai'
 import { alreadyPaidAtom, usersAtom } from '@/lib/atom'
 import { Separator } from '@/components/ui/separator'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 
 const PeoplePaymentView = () => {
@@ -37,7 +38,6 @@ const PeoplePaymentView = () => {
     return (
         <>
             <div className='min-h-screen flex p-4 gap-2 flex-col justify-between'>
-
                 <div className='border border-slate-300 rounded-lg px-2'>
                     <Accordion type='single' className="w-full px-2" defaultValue='udah-bayar'>
                         <AccordionItem value='udah-bayar' key='yang udah bayar'>
@@ -50,6 +50,17 @@ const PeoplePaymentView = () => {
                                 <Label className='text-xl'>Yang udah bayar</Label>
 
                             </AccordionTrigger>
+                            <Alert style={{ marginBlockEnd: '1rem' }} >
+                                <AlertTitle>
+                                    <p className='text-sm font-bold'>Jumlah pengeluaran tiap orang tidak termasuk kembalian!</p>
+                                </AlertTitle>
+                                <AlertDescription>
+                                    <p className='text-xs'>Contoh: <span style={{ fontWeight: 'bold', textDecoration: 'underline' }}>{placeholder2[0]}</span> mengeluarkan <span style={{ fontStyle: 'italic' }}>Rp. 100.000</span> dan mendapat kembalian <span style={{ fontStyle: 'italic' }}>Rp. 20.000</span></p>
+                                </AlertDescription>
+                                <AlertDescription>
+                                    <p className='text-xs ' style={{ marginBlockStart: '0.5rem' }}>Maka inputkan <span style={{ fontStyle: 'italic' }}>Rp. 80.000</span></p>
+                                </AlertDescription>
+                            </Alert>
                             <AccordionContent >
 
                                 <div className='flex flex-col gap-2 '>
