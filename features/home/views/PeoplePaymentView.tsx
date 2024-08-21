@@ -117,32 +117,13 @@ const PeoplePaymentView = () => {
 
                                     <div className='flex flex-col gap-2'>
 
-                                        <div className="flex items-end gap-2">
-                                            <div style={{ width: '70%' }}>
-                                                <Input
-                                                    // value={item.price}
-                                                    value="Total pengeluaran"
-                                                    readOnly
-                                                    onChange={() => { }}
-                                                />
-                                            </div>
-                                            <div>
-                                                <Input
-                                                    // value={item.price}
-                                                    value="Rp. 100.000"
-                                                    readOnly
-                                                    onChange={() => { }}
-                                                // onChange={(e) => handleInputChange(indexItem, 'price', e.target.value)}
-                                                />
-                                            </div>
-                                        </div>
 
                                         <div className="flex items-end gap-2">
                                             <div style={{ width: '70%' }}>
                                                 <Input
                                                     // value={item.price}
                                                     value="Total terkumpul"
-                                                    readOnly
+                                                    disabled
                                                     onChange={() => { }}
                                                 />
 
@@ -151,12 +132,33 @@ const PeoplePaymentView = () => {
                                                 <Input
                                                     // value={item.price}
                                                     value="Rp. 75.000"
-                                                    readOnly
+                                                    disabled
                                                     onChange={() => { }}
                                                 // onChange={(e) => handleInputChange(indexItem, 'price', e.target.value)}
                                                 />
                                             </div>
 
+                                        </div>
+
+
+                                        <div className="flex items-end gap-2">
+                                            <div style={{ width: '70%' }}>
+                                                <Input
+                                                    // value={item.price}
+                                                    value="Total pengeluaran"
+                                                    disabled
+                                                    onChange={() => { }}
+                                                />
+                                            </div>
+                                            <div>
+                                                <Input
+                                                    // value={item.price}
+                                                    value="Rp. 100.000"
+                                                    disabled
+                                                    onChange={() => { }}
+                                                // onChange={(e) => handleInputChange(indexItem, 'price', e.target.value)}
+                                                />
+                                            </div>
                                         </div>
 
                                         <Button className="rounded-full">- Rp. 25.000</Button>
