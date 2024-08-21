@@ -35,7 +35,6 @@ const PeoplePaymentView = () => {
     }
     return (
         <>
-            <Progress value={75} style={{ marginBottom: '1rem' }} />
             <div className='min-h-screen flex p-4 gap-2 flex-col justify-between'>
 
                 <div className='border border-slate-300 rounded-lg px-2'>

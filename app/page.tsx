@@ -1,5 +1,6 @@
 'use client'
 import { Badge } from '@/components/ui/badge'
+import { Progress } from '@/components/ui/progress'
 import Header from '@/features/home/components/Header/Header'
 import { placeholder } from '@/features/home/constants/constant'
 import AddPeopleView from '@/features/home/views/AddPeopleView'
@@ -10,7 +11,7 @@ import { useAtom, useAtomValue } from 'jotai'
 
 const Home = () => {
   const users = useAtomValue(usersAtom)
-  const [stepForm, setStepForm] = useAtom(stepFormAtom)
+  const [stepForm] = useAtom(stepFormAtom)
 
   const renderContent = () => {
 
@@ -30,11 +31,25 @@ const Home = () => {
     }
   }
 
+  const countProgress = () => {
+    if (stepForm === 1) {
+      if (users.length >= 2) {
+        return 30
+      }
+      return 0
+    } else if (stepForm === 2) {
+      return 60
+    } else if (stepForm === 3) {
+      return 100
+    }
+    return 0
+  }
+
   return (
     <div className='max-w-sm mx-auto'>
       <Header />
+      <Progress value={countProgress()} />
       {renderContent()}
-      {/* {users.length > 1 ? <CreateBillView /> : <AddPeopleView />} */}
     </div>
   )
 }

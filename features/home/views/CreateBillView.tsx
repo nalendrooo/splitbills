@@ -6,11 +6,8 @@ import IndividualBill from "../containers/IndividualBill"
 import Section2Bill from "../containers/Section2Bill"
 
 const CreateBillView = () => {
-
-
     return (
         <>
-            <Progress value={50} />
             <div className='min-h-screen flex p-4 gap-2 flex-col justify-between'>
                 <div>
 

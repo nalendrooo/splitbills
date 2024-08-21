@@ -33,7 +33,7 @@ const MenuAddSection = () => {
                 <DropdownMenuLabel>Type bills</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem disabled={showDivideEvenly} onClick={() => setShowDivideEvenly(prev => !prev)}>Bagi ke semua orang</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setSection(prev => [...prev, initialForSome])}>Beberapa orang aja {section.length + 1}</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setSection(prev => [...prev, initialForSome])}>Beberapa orang aja ({section.length + 1})</DropdownMenuItem>
                 <DropdownMenuItem disabled>more...</DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
