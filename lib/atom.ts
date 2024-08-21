@@ -8,6 +8,6 @@ export const forSomeAtom = atom<IForSome[]>([initialForSome])
 export const divideEvenlyAtom = atom(initialItem)
 export const alreadyPaidAtom = atom([initialAlreadyPaid])
 
-export const stepFormAtom = atom(3)
+export const stepFormAtom = atom(1)
 
 export const showDivideEvenlyAtom = atom(true)
