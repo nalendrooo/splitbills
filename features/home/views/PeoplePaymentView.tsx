@@ -94,17 +94,19 @@ const PeoplePaymentView = () => {
                                         ))}
 
                                     </div>
-                                    <div className='flex w-full items-center justify-center '>
+                                    {alreadyPaid.length !== users.length && (
+                                        <div className='flex w-full items-center justify-center '>
 
-                                        <Button
-                                            variant="outline"
-                                            size="icon"
-                                            className="shrink-0 rounded-full"
-                                            onClick={handleAddPerson}
-                                        >
-                                            <Plus className="h-4 w-4" />
-                                        </Button>
-                                    </div>
+                                            <Button
+                                                variant="outline"
+                                                size="icon"
+                                                className="shrink-0 rounded-full"
+                                                onClick={handleAddPerson}
+                                            >
+                                                <Plus className="h-4 w-4" />
+                                            </Button>
+                                        </div>
+                                    )}
 
 
                                 </div>
