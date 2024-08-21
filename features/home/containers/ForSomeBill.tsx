@@ -88,7 +88,7 @@ const ForSomeBill = ({ indexMain, itemSection }: { indexMain: number, itemSectio
                         <Users className="h-4 w-4" />
                     </AvatarFallback>
                 </Avatar>
-                <Label className='text-xl'>Beberapa saja {indexMain + 1}</Label>
+                <Label className='text-xl'>Beberapa orang aja ({indexMain + 1})</Label>
 
             </AccordionTrigger>
             <AccordionContent >

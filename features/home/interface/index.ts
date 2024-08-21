@@ -13,3 +13,7 @@ export interface IForSome {
     customers: number[];
 }
 
+export interface IAlreadyPaid {
+    indexUser: number
+    total: string
+}

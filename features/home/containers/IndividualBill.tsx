@@ -22,8 +22,7 @@ import { IItem } from '../interface'
 const IndividualBill = () => {
     const users = useAtomValue(usersAtom)
 
-    const structuredData = users.map(name => ({
-        name: name,
+    const structuredData = users.map((_, index) => ({
         items: [
             {
                 item: '',
@@ -122,9 +121,9 @@ const IndividualBill = () => {
                 <AccordionItem value={indexUser.toString()} key={indexUser}>
                     <AccordionTrigger className='hover:no-underline'>
                         <Avatar>
-                            <AvatarFallback>{cust.name[0] + (cust.name[1] ? cust.name[1] : '')}</AvatarFallback>
+                            <AvatarFallback>{users[indexUser][0] + (users[indexUser][1] ? users[indexUser][1] : '')}</AvatarFallback>
                         </Avatar>
-                        <Label className='text-xl'>{cust.name}</Label>
+                        <Label className='text-xl'>{users[indexUser]}</Label>
                     </AccordionTrigger>
                     <AccordionContent >
 

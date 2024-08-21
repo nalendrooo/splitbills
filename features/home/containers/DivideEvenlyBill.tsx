@@ -59,7 +59,7 @@ const DivideEvenlyBill = () => {
                         <Scale className="h-4 w-4" />
                     </AvatarFallback>
                 </Avatar>
-                <Label className='text-xl'>Sama Rata</Label>
+                <Label className='text-xl'>Bagi ke semua orang</Label>
 
             </AccordionTrigger>
             <AccordionContent >

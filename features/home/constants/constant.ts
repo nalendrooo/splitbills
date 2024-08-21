@@ -31,7 +31,6 @@ export const placeholder2 = [
 ]
 
 export const initialCustomers = {
-    name: '',
     items: [
         {
             item: '',
@@ -55,4 +54,9 @@ export const initialForSome: IForSome = {
             }
         ],
         customers: []
+    }
+
+    export const initialAlreadyPaid = {
+        indexUser: 0,
+        total: 'Rp. 0'
     }

@@ -24,8 +24,8 @@ import {
     DrawerTrigger,
 } from "@/components/ui/drawer"
 import { Input } from '@/components/ui/input'
-import { usersAtom } from '@/lib/atom'
-import { useSetAtom } from 'jotai'
+import { stepFormAtom, usersAtom } from '@/lib/atom'
+import { useAtom, useSetAtom } from 'jotai'
 import { Plus } from "lucide-react"
 import { useState } from 'react'
 
@@ -33,9 +33,11 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
 
 const FormAddPeopleDrawer = () => {
-    const setUsersAtom = useSetAtom(usersAtom)
-    const [users, setUsers] = useState<string[]>([])
+    const [users, setUsers] = useAtom(usersAtom)
+    // const [users, setUsers] = useState<string[]>([])
     const [input, setInput] = useState<string>('')
+
+    const setStepFrom = useSetAtom(stepFormAtom)
 
     const [selectedUser, setSelectedUser] = useState({
         name: '',
@@ -52,7 +54,8 @@ const FormAddPeopleDrawer = () => {
     }
 
     const handleSubmit = () => {
-        setUsersAtom(users)
+        // setUsersAtom(users)
+        setStepFrom(2)
     }
 
     const handleAddUser = () => {
@@ -74,12 +77,18 @@ const FormAddPeopleDrawer = () => {
         resetSelectedUser()
     }
 
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+        if (event.key === 'Enter') {
+            handleAddUser();
+        }
+    };
+
     return (
         <>
 
             <Drawer >
                 <DrawerTrigger asChild>
-                    <Button>Tambah penerima dulu!</Button>
+                    <Button className="rounded-full">Mulai!</Button>
                 </DrawerTrigger>
 
                 <DrawerContent >
@@ -94,65 +103,59 @@ const FormAddPeopleDrawer = () => {
                             <div className="rounded-md border p-4 gap-2  flex flex-col ">
                                 <div className='max-w-sm  gap-2 flex justify-center items-center pb-4' style={{ flexWrap: 'wrap' }}>
                                     {users.map((item, index) => (
-                                        <>
-                                            <AlertDialog key={index}>
-                                                <AlertDialogTrigger>
-                                                    <Badge
-                                                        variant={selectedUser.index === index ? 'destructive' : 'default'}
-                                                        className='px-2 mx-2'
-                                                        onClick={() => setSelectedUser(prev => ({ ...prev, name: item, index }))}>{item}
-                                                    </Badge>
-                                                </AlertDialogTrigger>
-                                                <AlertDialogContent>
-                                                    <AlertDialogHeader>
-                                                        <AlertDialogTitle>Beneran mau hapus {selectedUser.name}?</AlertDialogTitle>
-                                                        <AlertDialogDescription>
-                                                            Kalo dihapus beneran, nanti masih bisa masukin lagi sih. Yaudah hapus aja!
-                                                        </AlertDialogDescription>
-                                                    </AlertDialogHeader>
-                                                    <AlertDialogFooter>
-                                                        <AlertDialogCancel
-                                                            onClick={resetSelectedUser}
-                                                        >
-                                                            Ga
-                                                        </AlertDialogCancel>
-                                                        <AlertDialogAction
-                                                            onClick={() => handleDeleteUser(index)}
-                                                        >
-                                                            Ya
-                                                        </AlertDialogAction>
-                                                    </AlertDialogFooter>
-                                                </AlertDialogContent>
-                                            </AlertDialog>
 
+                                        <AlertDialog key={index}>
+                                            <AlertDialogTrigger>
+                                                <Badge
+                                                    variant={selectedUser.index === index ? 'destructive' : 'default'}
+                                                    className='px-2 mx-2'
+                                                    onClick={() => setSelectedUser(prev => ({ ...prev, name: item, index }))}>{item}
+                                                </Badge>
+                                            </AlertDialogTrigger>
+                                            <AlertDialogContent>
+                                                <AlertDialogHeader>
+                                                    <AlertDialogTitle>Beneran mau hapus {selectedUser.name}?</AlertDialogTitle>
+                                                    <AlertDialogDescription>
+                                                        Kalo dihapus beneran, nanti masih bisa masukin lagi sih. Yaudah hapus aja!
+                                                    </AlertDialogDescription>
+                                                </AlertDialogHeader>
+                                                <AlertDialogFooter>
+                                                    <AlertDialogCancel
+                                                        onClick={resetSelectedUser}
+                                                    >
+                                                        Ga
+                                                    </AlertDialogCancel>
+                                                    <AlertDialogAction
+                                                        onClick={() => handleDeleteUser(index)}
+                                                    >
+                                                        Ya
+                                                    </AlertDialogAction>
+                                                </AlertDialogFooter>
+                                            </AlertDialogContent>
+                                        </AlertDialog>
 
-                                        </>
                                     ))}
                                 </div>
                                 <div className='gap-2 flex flex-col'>
 
-                                    {/* {input.map((item, index) => ( */}
                                     <div className="flex items-center justify-center gap-2" >
                                         <Input
                                             placeholder='Nama temenmu...'
                                             type='text'
                                             value={input}
+                                            onKeyDown={handleKeyDown}
                                             onChange={e => handleInputChange(e.target.value)}
-                                        // value={item}
-                                        // onChange={e => handleInputChange(index, e.target.value)}
                                         />
                                         <Button
                                             variant="destructive"
                                             size="icon"
                                             className=" shrink-0 rounded-full"
                                             onClick={handleAddUser}
-                                            // onClick={() => handleDeleteInput(index)}
                                             disabled={!input}
                                         >
                                             <Plus className="h-4 w-4" />
                                         </Button>
                                     </div>
-                                    {/* ))} */}
 
                                 </div>
 
@@ -191,7 +194,9 @@ const FormAddPeopleDrawer = () => {
                             <Button
                                 disabled={users.length < 2}
                                 onClick={handleSubmit}
-                            >Submit</Button>
+                            >
+                                Submit
+                            </Button>
                             <DrawerClose asChild >
                                 <Button variant="outline" onClick={handleCancel}>Gak jadi!</Button>
                             </DrawerClose>
