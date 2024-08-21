@@ -18,6 +18,7 @@ import {
 import { initialAlreadyPaid, placeholder2 } from '../constants/constant'
 import { useAtom, useAtomValue } from 'jotai'
 import { alreadyPaidAtom, usersAtom } from '@/lib/atom'
+import { Separator } from '@/components/ui/separator'
 
 
 const PeoplePaymentView = () => {
@@ -105,6 +106,60 @@ const PeoplePaymentView = () => {
                                         </Button>
                                     </div>
 
+
+                                </div>
+
+                                <Separator style={{ marginBlock: '1rem' }} />
+
+                                <div className='flex flex-col gap-2 mt-2'>
+
+                                    <div className='flex flex-col gap-2'>
+
+                                        <div className="flex items-end gap-2">
+                                            <div style={{ width: '70%' }}>
+                                                <Input
+                                                    // value={item.price}
+                                                    value="Total pengeluaran"
+                                                    readOnly
+                                                    onChange={() => { }}
+                                                />
+                                            </div>
+                                            <div>
+                                                <Input
+                                                    // value={item.price}
+                                                    value="Rp. 100.000"
+                                                    readOnly
+                                                    onChange={() => { }}
+                                                // onChange={(e) => handleInputChange(indexItem, 'price', e.target.value)}
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-end gap-2">
+                                            <div style={{ width: '70%' }}>
+                                                <Input
+                                                    // value={item.price}
+                                                    value="Total terkumpul"
+                                                    readOnly
+                                                    onChange={() => { }}
+                                                />
+
+                                            </div>
+                                            <div>
+                                                <Input
+                                                    // value={item.price}
+                                                    value="Rp. 75.000"
+                                                    readOnly
+                                                    onChange={() => { }}
+                                                // onChange={(e) => handleInputChange(indexItem, 'price', e.target.value)}
+                                                />
+                                            </div>
+
+                                        </div>
+
+                                        <Button className="rounded-full">- Rp. 25.000</Button>
+
+                                    </div>
 
                                 </div>
                             </AccordionContent>

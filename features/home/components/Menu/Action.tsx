@@ -25,7 +25,7 @@ const Action = () => {
     }
 
     return (
-        <div className='flex gap-2 w-full flex-col px-2'>
+        <div className='flex gap-2 w-full flex-col'>
 
             {/* <MenuAddSection /> */}
 
