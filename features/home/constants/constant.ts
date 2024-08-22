@@ -34,7 +34,7 @@ export const initialCustomers = {
     items: [
         {
             item: '',
-            price: 'Rp. 0'
+            price: 0
         },
     ]
 }
@@ -42,7 +42,7 @@ export const initialCustomers = {
 export const initialItem = [
     {
         item: '',
-        price: 'Rp. 0',
+        price: 0,
     }
 ]
 
@@ -50,7 +50,7 @@ export const initialForSome: IForSome = {
         items: [
             {
                 item: '',
-                price: 'Rp. 0',
+                price: 0,
             }
         ],
         customers: []
@@ -58,5 +58,5 @@ export const initialForSome: IForSome = {
 
     export const initialAlreadyPaid = {
         indexUser: 0,
-        total: 'Rp. 0'
+        total: 0
     }

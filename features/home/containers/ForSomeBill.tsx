@@ -20,6 +20,7 @@ import { useAtom, useAtomValue } from 'jotai'
 import { Minus, Plus, Users } from 'lucide-react'
 import { initialItem } from "../constants/constant"
 import { IItem, IForSome } from '../interface'
+import { convertCurrencyToNumber, formatRupiah } from "@/lib/format"
 
 const ForSomeBill = ({ indexMain, itemSection }: { indexMain: number, itemSection: IForSome }) => {
     const users = useAtomValue(usersAtom)
@@ -49,13 +50,15 @@ const ForSomeBill = ({ indexMain, itemSection }: { indexMain: number, itemSectio
     }
 
     const handleInputChange = (indexSection: number, indexItem: number, field: string, value: string) => {
-        let newValue = value;
+        let newValue: number | string = value;
 
         if (field === 'price') {
-            const numericValue = value.replace(/\D/g, '');
-            const formattedValue = new Intl.NumberFormat('id-ID').format(Number(numericValue));
+            // const numericValue = value.replace(/\D/g, '');
+            // const formattedValue = new Intl.NumberFormat('id-ID').format(Number(numericValue));
 
-            newValue = `Rp. ${formattedValue}`;
+            // newValue = `Rp. ${formattedValue}`;
+
+            newValue = convertCurrencyToNumber(value);
         }
 
         const newSection = [...section]
@@ -110,7 +113,8 @@ const ForSomeBill = ({ indexMain, itemSection }: { indexMain: number, itemSectio
                                 </div>
                                 <div>
                                     <Input
-                                        value={item.price}
+                                        // value={item.price}
+                                        value={formatRupiah(item.price)}
                                         onChange={(e) => handleInputChange(indexMain, indexItem, 'price', e.target.value)}
                                     />
                                 </div>

@@ -13,10 +13,10 @@ const Action = () => {
     const [stepForm, setStepForm] = useAtom(stepFormAtom)
 
     const handleSubmit = () => {
-        console.log(users)
-        console.log(individual)
-        console.log(divideEvenly)
-        console.log(forSome)
+        // console.log('users',users)
+        // console.log('individual',individual)
+        // console.log('divideEvenly',divideEvenly)
+        // console.log('forSome', forSome)
         setStepForm(prev => prev + 1)
     }
 

@@ -1,6 +1,6 @@
 export interface IItem {
     item: string;
-    price: string; // Format price as a string with currency prefix, e.g., "Rp. 20,000"
+    price: number; // Format price as a string with currency prefix, e.g., "Rp. 20,000"
 }
 
 export interface ICustomer {
@@ -14,6 +14,5 @@ export interface IForSome {
 }
 
 export interface IAlreadyPaid {
-    indexUser: number
-    total: string
+    total: number
 }

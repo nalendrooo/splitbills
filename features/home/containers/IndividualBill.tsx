@@ -17,19 +17,14 @@ import { useAtom, useAtomValue } from 'jotai'
 import { Minus, Plus } from 'lucide-react'
 import { useEffect } from 'react'
 import { IItem } from '../interface'
+import { convertCurrencyToNumber, formatRupiah } from "@/lib/format"
+import { initialCustomers, initialItem } from "../constants/constant"
 
 
 const IndividualBill = () => {
     const users = useAtomValue(usersAtom)
 
-    const structuredData = users.map((_, index) => ({
-        items: [
-            {
-                item: '',
-                price: 'Rp. 0'
-            },
-        ]
-    }));
+    const structuredData = users.map((_, index) => (initialCustomers));
 
     const [customer, setCustomer] = useAtom(individualAtom)
 
@@ -45,10 +40,7 @@ const IndividualBill = () => {
                 ...newCustomer[indexUser],
                 items: [
                     ...newCustomer[indexUser].items,
-                    {
-                        item: '',
-                        price: 'Rp. 0'
-                    }
+                    initialItem[0]
                 ]
             };
             return newCustomer;
@@ -67,13 +59,15 @@ const IndividualBill = () => {
     }
 
     const handleInputChange = (indexUser: number, indexItem: number, field: string, value: string) => {
-        let newValue = value;
+        let newValue : number | string = value;
 
         if (field === 'price') {
-            const numericValue = value.replace(/\D/g, '');
-            const formattedValue = new Intl.NumberFormat('id-ID').format(Number(numericValue));
+            // const numericValue = value.replace(/\D/g, '');
+            // const formattedValue = new Intl.NumberFormat('id-ID').format(Number(numericValue));
 
-            newValue = `Rp. ${formattedValue}`;
+            // newValue = `Rp. ${formattedValue}`;
+
+            newValue = convertCurrencyToNumber(value);
         }
 
         setCustomer(prev => {
@@ -144,7 +138,8 @@ const IndividualBill = () => {
                                         </div>
                                         <div>
                                             <Input
-                                                value={item.price}
+                                                // value={item.price}
+                                                value={formatRupiah(item.price)}
                                                 onChange={(e) => handleInputChange(indexUser, indexItem, 'price', e.target.value)}
                                             />
                                         </div>

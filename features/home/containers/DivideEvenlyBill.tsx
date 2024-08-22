@@ -14,19 +14,18 @@ import { Minus, Plus, Scale } from 'lucide-react'
 import { initialItem } from "../constants/constant"
 import { IItem } from "../interface"
 import { Separator } from "@/components/ui/separator"
+import { convertCurrencyToNumber, formatRupiah } from "@/lib/format"
 
 const DivideEvenlyBill = () => {
     const [divideEvenly, setDivideEvenly] = useAtom(divideEvenlyAtom)
     const setShowDivideEvenly = useSetAtom(showDivideEvenlyAtom)
 
     const handleInputChange = (indexItem: number, field: string, value: string) => {
-        let newValue = value;
+        let newValue: number | string = value;
+
 
         if (field === 'price') {
-            const numericValue = value.replace(/\D/g, '');
-            const formattedValue = new Intl.NumberFormat('id-ID').format(Number(numericValue));
-
-            newValue = `Rp. ${formattedValue}`;
+            newValue = convertCurrencyToNumber(value)
         }
 
         setDivideEvenly(prev => {
@@ -68,7 +67,7 @@ const DivideEvenlyBill = () => {
 
                     <div className='flex flex-col gap-2'>
 
-                        {divideEvenly.map((item: IItem, indexItem: number) => (
+                        {divideEvenly.map((item: any, indexItem: number) => (
 
                             <div className="flex items-end gap-2" key={indexItem}>
                                 <div>
@@ -80,7 +79,7 @@ const DivideEvenlyBill = () => {
                                 </div>
                                 <div>
                                     <Input
-                                        value={item.price}
+                                        value={formatRupiah(item.price)}
                                         onChange={(e) => handleInputChange(indexItem, 'price', e.target.value)}
                                     />
                                 </div>
