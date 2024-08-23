@@ -4,8 +4,9 @@ import { Task } from '@/lib/store';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { cva } from 'class-variance-authority';
-import { GripVertical } from 'lucide-react';
+import { Ellipsis, GripVertical, Menu, Move } from 'lucide-react';
 import { Badge } from '../ui/badge';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu';
 
 // export interface Task {
 //   id: UniqueIdentifier;
@@ -77,12 +78,52 @@ export function TaskCard({ task, isOverlay }: TaskCardProps) {
           <GripVertical />
         </Button>
         <Badge variant={'outline'} className="ml-auto font-semibold">
-          Rp. 100.000
+          {task.description}
         </Badge>
+        <DropdownMenu modal={false}>
+          <DropdownMenuTrigger asChild>
+            <Button size="sm" variant="ghost" className='ml-2'>
+              <span className="sr-only">Actions</span>
+              <Ellipsis className='h-4 w-4' />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem
+              // onSelect={() => {
+              //   setIsEditDisable(prev => !prev);
+              //   setTimeout(() => {
+              //     inputRef.current && inputRef.current?.focus();
+              //   }, 500);
+              // }}
+              className='text-xs'
+            >
+              {/* {editDisable ? 'Rename' : 'Save Changes'} */}
+
+              Edit
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem
+              // onSelect={() => setShowDeleteDialog(true)}
+              className="text-xs"
+            >
+              Duplicate
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem
+              // onSelect={() => setShowDeleteDialog(true)}
+              className="text-red-600 text-xs"
+            >
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
       </CardHeader>
       <CardContent className="whitespace-pre-wrap px-3 pb-6 pt-3 text-left">
         {task.title}
-        <p className='text-sm text-muted-foreground'>{task.description}</p>
+        {/* <p className='text-sm text-muted-foreground'>{task.description}</p> */}
       </CardContent>
     </Card>
   );

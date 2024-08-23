@@ -33,7 +33,7 @@ export default function NewTaskDialog() {
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="secondary" size="sm">
-          ＋ Add New Item
+          ＋ Tambah item
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">

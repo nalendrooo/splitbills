@@ -1,9 +1,11 @@
+'use client'
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { KanbanBoard } from '@/components/kanban/kanban-board';
 import NewTaskDialog from '@/components/kanban/new-task-dialog';
 import PageContainer from '@/components/layouts/page-container';
 import { Button } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
+import { useTaskStore } from '@/lib/store';
 
 const breadcrumbItems = [
   { title: 'Dashboard', link: '/' },
@@ -11,6 +13,8 @@ const breadcrumbItems = [
 ];
 
 export default function page() {
+  const columns = useTaskStore((state) => state.columns);
+  const tasks = useTaskStore((state) => state.tasks);
   return (
     <PageContainer>
       <div className="space-y-4">
@@ -20,10 +24,16 @@ export default function page() {
           <NewTaskDialog />
         </div>
         <KanbanBoard />
-        <div className='w-full'>
 
-          <Button className='w-full'>Lanjutkan</Button>
-        </div>
+        {columns.length !== 0 &&
+          <div className='w-full'>
+            <Button className='w-full'
+              disabled={tasks.length === 0}
+            >
+              Lanjutkan</Button>
+          </div>
+        }
+
       </div>
     </PageContainer>
   );

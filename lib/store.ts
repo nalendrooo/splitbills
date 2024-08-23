@@ -32,12 +32,14 @@ const initialTasks: Task[] = [
   {
     id: 'task1',
     status: 'Nama',
-    title: 'Matcha Latte'
+    title: 'Matcha Latte',
+    description: 'Rp. 21.000'
   },
   {
     id: 'task2',
     status: 'Nama',
-    title: 'Ayam geprek (sambal matah)'
+    title: 'Ayam geprek (sambal matah)',
+    description: 'Rp. 123.000'
   }
 ];
 

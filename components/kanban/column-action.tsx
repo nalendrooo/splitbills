@@ -24,6 +24,7 @@ import { useTaskStore } from '@/lib/store';
 import { UniqueIdentifier } from '@dnd-kit/core';
 import { Input } from '../ui/input';
 import { Ellipsis, EllipsisVertical } from 'lucide-react';
+import { Badge } from '../ui/badge';
 
 export function ColumnActions({
   title,
@@ -40,6 +41,17 @@ export function ColumnActions({
   const [showDeleteDialog, setShowDeleteDialog] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+
+  const columns = useTaskStore((state) => state.columns);
+
+  React.useEffect(() => {
+    if (columns.length === 1 && columns[0].title === 'Nama') {
+      setIsEditDisable(false);
+      setTimeout(() => {
+        inputRef.current && inputRef.current?.focus();
+      }, 500);
+    }
+  }, []);
 
   return (
     <>
@@ -63,6 +75,7 @@ export function ColumnActions({
           ref={inputRef}
         />
       </form>
+
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
           <Button variant="secondary" className="ml-1">
@@ -91,6 +104,7 @@ export function ColumnActions({
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -121,6 +135,7 @@ export function ColumnActions({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      
     </>
   );
 }

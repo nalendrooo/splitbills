@@ -63,7 +63,7 @@ export function KanbanBoard() {
     //   coordinateGetter: coordinateGetter,
     // }),
   );
-
+  
   useEffect(() => {
     setIsMounted(true);
   }, [isMounted]);
