@@ -101,7 +101,7 @@ export function BoardColumn({ column, tasks, isOverlay }: BoardColumnProps) {
 
       </CardHeader>
       <CardContent className="flex flex-grow flex-col gap-4 overflow-x-hidden p-2">
-        <Badge variant="outline">Rp. 134.000</Badge>
+        <p className='ml-2 font-semibold'>Rp. 134.000</p>
         <ScrollArea className="h-full">
           <SortableContext items={tasksIds}>
             {tasks.map((task) => (
