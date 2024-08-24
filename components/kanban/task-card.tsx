@@ -121,9 +121,8 @@ export function TaskCard({ task, isOverlay }: TaskCardProps) {
         </DropdownMenu>
 
       </CardHeader>
-      <CardContent className="whitespace-pre-wrap px-3 pb-6 pt-3 text-left">
+      <CardContent className="whitespace-pre-wrap px-3 pb-6 pt-3 text-left flex flex-col relative">
         {task.title}
-        {/* <p className='text-sm text-muted-foreground'>{task.description}</p> */}
       </CardContent>
     </Card>
   );

@@ -59,7 +59,7 @@ export function BoardColumn({ column, tasks, isOverlay }: BoardColumnProps) {
   };
 
   const variants = cva(
-    'h-[75vh] max-h-[75vh] w-[350px] max-w-full bg-secondary flex flex-col flex-shrink-0 snap-center',
+    'h-[75vh] max-h-[75vh] w-[300px] max-w-full bg-secondary flex flex-col flex-shrink-0 snap-center',
     {
       variants: {
         dragging: {
@@ -101,7 +101,7 @@ export function BoardColumn({ column, tasks, isOverlay }: BoardColumnProps) {
 
       </CardHeader>
       <CardContent className="flex flex-grow flex-col gap-4 overflow-x-hidden p-2">
-        <p className='ml-2 font-semibold'>Rp. 134.000</p>
+        <p className='ml-2 font-semibold'>Rp. 0</p>
         <ScrollArea className="h-full">
           <SortableContext items={tasksIds}>
             {tasks.map((task) => (

@@ -43,15 +43,16 @@ export function ColumnActions({
   const { toast } = useToast();
 
   const columns = useTaskStore((state) => state.columns);
-
-  React.useEffect(() => {
-    if (columns.length === 1 && columns[0].title === 'Nama') {
-      setIsEditDisable(false);
-      setTimeout(() => {
-        inputRef.current && inputRef.current?.focus();
-      }, 500);
-    }
-  }, []);
+  // console.log(title)
+  // const name = columns.find((col) => col.id === id)?.title
+  // React.useEffect(() => {
+  //   if (columns.length === 1 && columns[0].title === 'Nama') {
+  //     setIsEditDisable(false);
+  //     setTimeout(() => {
+  //       inputRef.current && inputRef.current?.focus();
+  //     }, 500);
+  //   }
+  // }, []);
 
   return (
     <>
@@ -98,6 +99,13 @@ export function ColumnActions({
 
           <DropdownMenuItem
             onSelect={() => setShowDeleteDialog(true)}
+          // className="text-red-600"
+          >
+            Tambah item ({name})
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            onSelect={() => setShowDeleteDialog(true)}
             className="text-red-600"
           >
             Delete Section
@@ -135,7 +143,7 @@ export function ColumnActions({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-      
+
     </>
   );
 }

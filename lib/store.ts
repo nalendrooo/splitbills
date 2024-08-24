@@ -7,10 +7,10 @@ import { UniqueIdentifier } from '@dnd-kit/core';
 export type Status = 'Nama' | 'IN_PROGRESS' | 'DONE';
 
 const defaultCols = [
-  {
-    id: 'Nama' as const,
-    title: 'Nama'
-  }
+  // {
+  //   id: 'Nama' as const,
+  //   title: 'Nama'
+  // }
 ] satisfies Column[];
 
 export type ColumnId = (typeof defaultCols)[number]['id'];
@@ -29,18 +29,18 @@ export type State = {
 };
 
 const initialTasks: Task[] = [
-  {
-    id: 'task1',
-    status: 'Nama',
-    title: 'Matcha Latte',
-    description: 'Rp. 21.000'
-  },
-  {
-    id: 'task2',
-    status: 'Nama',
-    title: 'Ayam geprek (sambal matah)',
-    description: 'Rp. 123.000'
-  }
+  // {
+  //   id: 'task1',
+  //   status: 'Nama',
+  //   title: 'Matcha Latte',
+  //   description: 'Rp. 21.000'
+  // },
+  // {
+  //   id: 'task2',
+  //   status: 'Nama',
+  //   title: 'Ayam geprek (sambal matah)',
+  //   description: 'Rp. 123.000'
+  // }
 ];
 
 export type Actions = {
@@ -76,8 +76,8 @@ export const useTaskStore = create<State & Actions>()(
       addCol: (title: string) =>
         set((state) => ({
           columns: [
-            ...state.columns,
-            { title, id: state.columns.length ? title : 'Nama' }
+            { title, id: title },
+            ...state.columns
           ]
         })),
       dragTask: (id: string | null) => set({ draggedTask: id }),

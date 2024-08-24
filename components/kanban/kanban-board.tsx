@@ -20,7 +20,7 @@ import {
 import { SortableContext, arrayMove } from '@dnd-kit/sortable';
 import type { Column } from './board-column';
 import { BoardColumn, BoardContainer } from './board-column';
-import NewSectionDialog from './new-section-dialog';
+// import NewSectionDialog from './new-section-dialog';
 import { TaskCard } from './task-card';
 // import { coordinateGetter } from "./multipleContainersKeyboardPreset";
 
@@ -63,7 +63,7 @@ export function KanbanBoard() {
     //   coordinateGetter: coordinateGetter,
     // }),
   );
-  
+
   useEffect(() => {
     setIsMounted(true);
   }, [isMounted]);
@@ -185,14 +185,14 @@ export function KanbanBoard() {
                 column={col}
                 tasks={tasks.filter((task) => task.status === col.id)}
               />
-              {index === columns?.length - 1 && (
+              {/* {index === columns?.length - 1 && (
                 <div className="w-[300px]">
                   <NewSectionDialog />
                 </div>
-              )}
+              )} */}
             </Fragment>
           ))}
-          {!columns.length && <NewSectionDialog />}
+          {/* {!columns.length && <NewSectionDialog />} */}
         </SortableContext>
       </BoardContainer>
 

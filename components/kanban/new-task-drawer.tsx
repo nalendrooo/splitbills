@@ -65,9 +65,9 @@ export default function NewTaskDrawer() {
                             <Tooltip defaultOpen>
                                 <TooltipTrigger>
                                     <TabsList>
-                                        <TabsTrigger value="perorangan">Perorangan</TabsTrigger>
-                                        <TabsTrigger value="semua-orang">Semua orang</TabsTrigger>
-                                        <TabsTrigger value="bagi-beberapa-orang">Bagi beberapa orang</TabsTrigger>
+                                        <TabsTrigger value="perorangan">Individu</TabsTrigger>
+                                        <TabsTrigger value="semua-orang">Split semua orang</TabsTrigger>
+                                        <TabsTrigger value="bagi-beberapa-orang">Split beberapa orang</TabsTrigger>
                                     </TabsList>
                                 </TooltipTrigger>
                                 <TooltipContent >
