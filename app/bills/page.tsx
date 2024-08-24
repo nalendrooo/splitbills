@@ -11,6 +11,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
+import { formatRupiah } from '@/lib/format';
 import { useTaskStore } from '@/lib/store';
 import { GripVertical, Terminal } from 'lucide-react';
 import { RxDragHandleDots2 } from "react-icons/rx";
@@ -22,6 +23,8 @@ const breadcrumbItems = [
 export default function page() {
   const columns = useTaskStore((state) => state.columns);
   const tasks = useTaskStore((state) => state.tasks);
+  const total = tasks.map((task) => task.price).reduce((a, b) => a + b, 0);
+
   return (
     <PageContainer>
       <div className="space-y-4">
@@ -40,7 +43,7 @@ export default function page() {
           <>
             <div className='w-full flex justify-center'>
 
-              <Badge >Total: Rp. 0</Badge>
+              <Badge >Total: {formatRupiah(total)}</Badge>
             </div>
             <div className='w-full'>
               <Button

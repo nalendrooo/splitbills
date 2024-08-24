@@ -15,7 +15,12 @@ import { Textarea } from '../ui/textarea';
 
 import { useTaskStore } from '@/lib/store';
 
-export default function NewTaskDialog() {
+export default function NewTaskDialog({
+  open,
+  task,
+  onClose,
+  type
+}: any) {
   const addTask = useTaskStore((state) => state.addTask);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -26,21 +31,16 @@ export default function NewTaskDialog() {
     const { title, description } = Object.fromEntries(formData);
 
     if (typeof title !== 'string' || typeof description !== 'string') return;
-    addTask(title, description);
+    // addTask(title, description);
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="secondary" size="sm">
-          ＋ Tambah item
-        </Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Add New Item</DialogTitle>
+          <DialogTitle>{type === 'add' ? 'Tambah item baru' : 'Ubah item Ayam'}</DialogTitle>
           <DialogDescription>
-            What do you want to get done today?
+            {type === 'add' ? 'Mau nambahin item apa buat Nalendro?' : 'Mau ubah item apa buat Nalendro?'}
           </DialogDescription>
         </DialogHeader>
         <form
@@ -48,27 +48,30 @@ export default function NewTaskDialog() {
           className="grid gap-4 py-4"
           onSubmit={handleSubmit}
         >
-          <div className="grid grid-cols-4 items-center gap-4">
+          <div className="grid grid-cols-2 items-center gap-4">
             <Input
               id="title"
               name="title"
-              placeholder="Todo title..."
-              className="col-span-4"
+              placeholder="Nama item..."
+            // className="col-span-2"
+            />
+            <Input
+              id="title"
+              name="title"
+              value='Rp. 73.000'
+              onChange={() => { }}
+              placeholder="Nama item..."
+            // className="col-span-2"
             />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Textarea
-              id="description"
-              name="description"
-              placeholder="Description..."
-              className="col-span-4"
-            />
-          </div>
+
+
+
         </form>
         <DialogFooter>
           <DialogTrigger asChild>
             <Button type="submit" size="sm" form="todo-form">
-              Add Todo
+              {type === 'add' ? 'Tambah' : 'Simpan'}
             </Button>
           </DialogTrigger>
         </DialogFooter>

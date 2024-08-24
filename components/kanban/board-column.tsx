@@ -11,6 +11,9 @@ import { ColumnActions } from './column-action';
 import { TaskCard } from './task-card';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { Badge } from '../ui/badge';
+import { useAtomValue } from 'jotai';
+import { errorNameUsedAtom } from '@/lib/stateman';
+import { formatRupiah } from '@/lib/format';
 
 export interface Column {
   id: UniqueIdentifier;
@@ -31,6 +34,9 @@ interface BoardColumnProps {
 }
 
 export function BoardColumn({ column, tasks, isOverlay }: BoardColumnProps) {
+
+  const errorNameUsed = useAtomValue(errorNameUsedAtom)
+
   const tasksIds = useMemo(() => {
     return tasks.map((task) => task.id);
   }, [tasks]);
@@ -71,6 +77,9 @@ export function BoardColumn({ column, tasks, isOverlay }: BoardColumnProps) {
     }
   );
 
+  const total = tasks.map((task) => task.price).reduce((a, b) => a + b, 0);
+  const totalItem = tasks.map((task) => task.status === column.id).length
+
   return (
     <Card
       ref={setNodeRef}
@@ -79,29 +88,36 @@ export function BoardColumn({ column, tasks, isOverlay }: BoardColumnProps) {
         dragging: isOverlay ? 'overlay' : isDragging ? 'over' : undefined
       })}
     >
-      <CardHeader className="space-between flex flex-row items-center border-b-2 p-4 text-left font-semibold">
+      <CardHeader className="space-between flex flex-col items-center border-b-2 p-4 text-left font-semibold ">
         {/* <div className="flex flex-row items-center gap-2"> */}
+        <div className='flex '>
 
-        <Button
-          variant={'ghost'}
-          {...attributes}
-          {...listeners}
-          className=" relative -ml-2 h-auto cursor-grab p-1 text-primary/50"
-        >
-          <span className="sr-only">{`Move column: ${column.title}`}</span>
-          <GripVertical />
-        </Button>
-        {/* <span className="mr-auto !mt-0"> {column.title}</span> */}
-        {/* <Input
+          <Button
+            variant={'ghost'}
+            {...attributes}
+            {...listeners}
+            className=" relative -ml-2 h-auto cursor-grab p-1 text-primary/50"
+          >
+            <span className="sr-only">{`Move column: ${column.title}`}</span>
+            <GripVertical />
+          </Button>
+          {/* <span className="mr-auto !mt-0"> {column.title}</span> */}
+          {/* <Input
           defaultValue={column.title}
           className="text-base !mt-0 mr-auto"
-        /> */}
-        <ColumnActions id={column.id} title={column.title} />
-        {/* </div> */}
-
+          /> */}
+          <ColumnActions id={column.id} title={column.title} />
+          {/* </div> */}
+        </div>
+        <div className='w-full ps-6'>
+          {errorNameUsed.error && (column.title === errorNameUsed.title) && <p className='text-red-600 text-start text-xs pt-2'>Error: Nama sudah digunakan</p>}
+        </div>
       </CardHeader>
       <CardContent className="flex flex-grow flex-col gap-4 overflow-x-hidden p-2">
-        <p className='ml-2 font-semibold'>Rp. 0</p>
+        <div className='flex justify-between items-end'>
+          <p className='ml-2 font-semibold'>{formatRupiah(total)}</p>
+          <p className='ml-2 text-xs font-semibold'>{totalItem} Item</p>
+        </div>
         <ScrollArea className="h-full">
           <SortableContext items={tasksIds}>
             {tasks.map((task) => (

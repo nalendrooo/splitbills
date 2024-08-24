@@ -26,10 +26,13 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { ScrollArea } from '../ui/scroll-area';
+import { Badge } from '../ui/badge';
+import { Separator } from '../ui/separator';
 
 
 export default function NewTaskDrawer() {
-    const addTask = useTaskStore((state) => state.addTask);
+    // const addTask = useTaskStore((state) => state.addTask);
     const columns = useTaskStore((state) => state.columns);
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -39,7 +42,7 @@ export default function NewTaskDrawer() {
         const { title, description } = Object.fromEntries(formData);
 
         if (typeof title !== 'string' || typeof description !== 'string') return;
-        addTask(title, description);
+        // addTask(title, description);
     };
 
     return (
@@ -56,27 +59,26 @@ export default function NewTaskDrawer() {
                     <DrawerHeader>
                         <DrawerTitle>Tambah item</DrawerTitle>
                         <DrawerDescription>
-                            <p>Masukin itemnya dan pilih orangnya.</p>
-
+                            Masukin itemnya dan pilih orangnya.
                         </DrawerDescription>
                     </DrawerHeader>
-                    <Tabs defaultValue="perorangan" className="w-[400px]">
+                    <Tabs defaultValue="individu" className="w-[400px]">
                         <TooltipProvider delayDuration={100} >
                             <Tooltip defaultOpen>
-                                <TooltipTrigger>
+                                <TooltipTrigger asChild>
                                     <TabsList>
-                                        <TabsTrigger value="perorangan">Individu</TabsTrigger>
+                                        <TabsTrigger value="individu">Individu</TabsTrigger>
                                         <TabsTrigger value="semua-orang">Split semua orang</TabsTrigger>
                                         <TabsTrigger value="bagi-beberapa-orang">Split beberapa orang</TabsTrigger>
                                     </TabsList>
                                 </TooltipTrigger>
                                 <TooltipContent >
-                                    <p>Kamu bisa pilih satu dari beberapa tipe penghitungan item</p>
+                                    Kamu bisa pilih satu dari beberapa tipe penghitungan item
                                 </TooltipContent>
                             </Tooltip>
                         </TooltipProvider>
 
-                        <TabsContent value="perorangan">
+                        <TabsContent value="individu">
                             <form
                                 id="todo-form"
                                 className="grid gap-4 py-4"
@@ -86,12 +88,14 @@ export default function NewTaskDrawer() {
                                     <Input
                                         id="title"
                                         name="title"
+                                        onChange={() => { }}
                                         placeholder="Nama item..."
                                     // className="col-span-2"
                                     />
                                     <Input
                                         id="title"
                                         name="title"
+                                        onChange={() => { }}
                                         value='Rp. 73.000'
                                         placeholder="Nama item..."
                                     // className="col-span-2"
@@ -102,33 +106,40 @@ export default function NewTaskDrawer() {
 
                             </form>
                             <Card>
-                                <CardHeader>
-                                    <h2 className="text-md font-semibold">Pilih penerima bill</h2>
-                                </CardHeader>
+                                {/* <CardHeader>
+                                </CardHeader> */}
+                                <div className='px-6 py-4 w-full text-center'>
+                                    <h2 className="text-md font-semibold">Pilih penerima bills</h2>
+                                    {/* <Badge variant="outline" className='rounded '>Pilih penerima bills</Badge> */}
+                                </div>
+                                <Separator />
                                 <CardContent>
-                                    {columns.map((item: any, index: number) => (
+                                    <ScrollArea className="h-[210px] mt-2">
+                                        {columns.map((item: any, index: number) => (
 
-                                        <div className="flex items-center gap-2 py-2" key={index}>
-                                            <Checkbox
-                                                id="terms"
-                                            // checked={section[indexMain].customers.includes(index as never)}
-                                            // onCheckedChange={() => handleCheckboxChange(indexMain, index)}
-                                            />
-                                            <label
-                                                htmlFor="terms"
-                                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                            >
-                                                {item.title}
-                                            </label>
-                                        </div>
-                                    ))}
+                                            <div className="flex items-center gap-2 py-2" key={index}>
+                                                <Checkbox
+                                                    id="terms"
+                                                // checked={section[indexMain].customers.includes(index as never)}
+                                                // onCheckedChange={() => handleCheckboxChange(indexMain, index)}
+                                                />
+                                                <label
+                                                    htmlFor="terms"
+                                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                                >
+                                                    <Badge variant="outline" className='rounded '>{item.title}</Badge>
+                                                    {/* {item.title} */}
+                                                </label>
+                                            </div>
+                                        ))}
+                                    </ScrollArea>
                                 </CardContent>
 
                             </Card>
                             <Alert className='mt-4'>
                                 <Terminal className="h-4 w-4" />
-                                <AlertDescription>
-                                    <p className='text-xs'>Setiap orang mendapat bills Rp. 73.000</p>
+                                <AlertDescription className='text-xs'>
+                                    Setiap orang mendapat bills Rp. 73.000
                                 </AlertDescription>
                             </Alert>
                         </TabsContent>
@@ -142,13 +153,15 @@ export default function NewTaskDrawer() {
                                     <Input
                                         id="title"
                                         name="title"
+                                        onChange={() => { }}
                                         placeholder="Nama item..."
                                     // className="col-span-2"
                                     />
                                     <Input
                                         id="title"
                                         name="title"
-                                        value='Rp. 100.000'
+                                        onChange={() => { }}
+                                        defaultValue='Rp. 100.000'
                                         placeholder="Nama item..."
                                     // className="col-span-2"
                                     />
@@ -158,10 +171,10 @@ export default function NewTaskDrawer() {
 
                             </form>
 
-                            <Alert className='mt-4'>
+                            <Alert >
                                 <Terminal className="h-4 w-4" />
-                                <AlertDescription>
-                                    <p className='text-xs'>Setiap orang mendapat bills Rp. 40.000</p>
+                                <AlertDescription className='text-xs'>
+                                    Setiap orang mendapat bills Rp. 40.000
                                 </AlertDescription>
                             </Alert>
                         </TabsContent>
@@ -175,13 +188,15 @@ export default function NewTaskDrawer() {
                                     <Input
                                         id="title"
                                         name="title"
+                                        onChange={() => { }}
                                         placeholder="Nama item..."
                                     // className="col-span-2"
                                     />
                                     <Input
                                         id="title"
                                         name="title"
-                                        value='Rp. 120.000'
+                                        onChange={() => { }}
+                                        defaultValue='Rp. 120.000'
                                         placeholder="Nama item..."
                                     // className="col-span-2"
                                     />
@@ -191,41 +206,66 @@ export default function NewTaskDrawer() {
 
                             </form>
                             <Card>
-                                <CardHeader>
-                                    <h2 className="text-md font-semibold">Pilih penerima bill</h2>
-                                </CardHeader>
-                                <CardContent>
-                                    {columns.map((item: any, index: number) => (
+                                {/* <CardHeader>
+                                </CardHeader> */}
+                                <div className='px-6 py-4 w-full text-center'>
 
-                                        <div className="flex items-center gap-2 py-2" key={index}>
-                                            <Checkbox
-                                                id="terms"
-                                            // checked={section[indexMain].customers.includes(index as never)}
-                                            // onCheckedChange={() => handleCheckboxChange(indexMain, index)}
-                                            />
-                                            <label
-                                                htmlFor="terms"
-                                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                            >
-                                                {item.title}
-                                            </label>
-                                        </div>
-                                    ))}
+                                    <h2 className="text-md font-semibold">Pilih penerima bills</h2>
+                                    {/* <Badge variant="outline" className='rounded '>Pilih penerima bills</Badge> */}
+                                </div>
+                                <Separator />
+                                <CardContent>
+                                    <ScrollArea className="h-[210px] ">
+                                        {columns.map((item: any, index: number) => (
+
+                                            <div className="flex items-center gap-2 py-2" key={index}>
+                                                <Checkbox
+                                                    id="terms"
+                                                // checked={section[indexMain].customers.includes(index as never)}
+                                                // onCheckedChange={() => handleCheckboxChange(indexMain, index)}
+                                                />
+                                                <label
+                                                    htmlFor="terms"
+                                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                                >
+                                                    <Badge variant="outline" className='rounded '>{item.title}</Badge>
+                                                    {/* {item.title} */}
+                                                </label>
+                                            </div>
+                                        ))}
+                                        {columns.map((item: any, index: number) => (
+
+                                            <div className="flex items-center gap-2 py-2" key={index}>
+                                                <Checkbox
+                                                    id="terms"
+                                                // checked={section[indexMain].customers.includes(index as never)}
+                                                // onCheckedChange={() => handleCheckboxChange(indexMain, index)}
+                                                />
+                                                <label
+                                                    htmlFor="terms"
+                                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                                >
+                                                    <Badge variant="outline" className='rounded '>{item.title}</Badge>
+                                                    {/* {item.title} */}
+                                                </label>
+                                            </div>
+                                        ))}
+                                    </ScrollArea>
                                 </CardContent>
 
                             </Card>
                             <Alert className='mt-4'>
                                 <Terminal className="h-4 w-4" />
-                                <AlertDescription>
-                                    <p className='text-xs'>Bill dibagi ke 3 orang.</p>
-                                    <p className='text-xs'>Setiap orang mendapat bills Rp. 60.000</p>
+                                <AlertDescription className='text-xs flex flex-col'>
+                                    <span>Bill dibagi ke 3 orang.</span>
+                                    <span> Setiap orang mendapat bills Rp. 60.000</span>
                                 </AlertDescription>
                             </Alert>
                         </TabsContent>
                     </Tabs>
 
 
-                    <DrawerFooter className='  w-full'>
+                    <DrawerFooter className='w-full'>
                         <Button>Tambah</Button>
                         <Button variant='outline'>Batal</Button>
                     </DrawerFooter>

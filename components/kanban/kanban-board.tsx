@@ -24,22 +24,23 @@ import { BoardColumn, BoardContainer } from './board-column';
 import { TaskCard } from './task-card';
 // import { coordinateGetter } from "./multipleContainersKeyboardPreset";
 
-const defaultCols = [
-  {
-    id: 'Nama' as const,
-    title: 'Nama'
-  },
-  {
-    id: 'IN_PROGRESS' as const,
-    title: 'In progress'
-  },
-  {
-    id: 'DONE' as const,
-    title: 'Done'
-  }
-] satisfies Column[];
+// const defaultCols = [
+//   // {
+//   //   id: 'Nama' as const,
+//   //   title: 'Nama'
+//   // },
+//   // {
+//   //   id: 'IN_PROGRESS' as const,
+//   //   title: 'In progress'
+//   // },
+//   // {
+//   //   id: 'DONE' as const,
+//   //   title: 'Done'
+//   // }
+// ] satisfies Column[];
 
-export type ColumnId = (typeof defaultCols)[number]['id'];
+// export type ColumnId = (typeof defaultCols)[number]['id'];
+export type ColumnId = UniqueIdentifier;
 
 export function KanbanBoard() {
   // const [columns, setColumns] = useState<Column[]>(defaultCols);

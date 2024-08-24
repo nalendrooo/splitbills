@@ -12,19 +12,28 @@ import {
 import { Input } from '@/components/ui/input';
 
 import { useTaskStore } from '@/lib/store';
+import { useState } from 'react';
 
 export default function NewSectionDialog() {
   const addCol = useTaskStore((state) => state.addCol);
+  const columns = useTaskStore((state) => state.columns);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const [errorNameUsed, setErrorNameUsed] = useState(false);
+  const [name, setName] = useState('')
 
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-    const { title } = Object.fromEntries(formData);
+  const handleSubmit = () => {
+    if (errorNameUsed) return;
+    addCol(name);
+    setErrorNameUsed(false);
+  };
 
-    if (typeof title !== 'string') return;
-    addCol(title);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (columns.find((col) => col.title === e.target.value)) {
+      setErrorNameUsed(true);
+    } else {
+      setErrorNameUsed(false);
+    }
+    setName(e.target.value);
   };
 
   return (
@@ -43,7 +52,7 @@ export default function NewSectionDialog() {
         </DialogHeader>
         <form
           id="todo-form"
-          className="grid gap-4 py-4"
+          className="grid gap-2 py-4"
           onSubmit={handleSubmit}
         >
           <div className="grid grid-cols-4 items-center gap-4">
@@ -52,12 +61,14 @@ export default function NewSectionDialog() {
               name="title"
               placeholder="Nama temen kamu..."
               className="col-span-4"
+              onChange={handleChange}
             />
           </div>
+          {errorNameUsed && <p className='text-red-600 font-semibold text-start text-xs pt-2'>Error: Nama sudah digunakan</p>}
         </form>
         <DialogFooter>
           <DialogTrigger asChild>
-            <Button type="submit" size="sm" form="todo-form">
+            <Button type="submit" size="sm" form="todo-form" disabled={errorNameUsed || !name}>
               Tambah
             </Button>
           </DialogTrigger>

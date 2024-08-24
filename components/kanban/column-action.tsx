@@ -25,6 +25,9 @@ import { UniqueIdentifier } from '@dnd-kit/core';
 import { Input } from '../ui/input';
 import { Ellipsis, EllipsisVertical } from 'lucide-react';
 import { Badge } from '../ui/badge';
+import { useAtom } from 'jotai';
+import { errorNameUsedAtom } from '@/lib/stateman';
+import NewTaskDialog from './new-task-dialog';
 
 export function ColumnActions({
   title,
@@ -53,27 +56,84 @@ export function ColumnActions({
   //     }, 500);
   //   }
   // }, []);
+  const [errorNameUsed, setErrorNameUsed] = useAtom(errorNameUsedAtom);
+  // const [rename, setRename] = React.useState('');
+
+  const addTask = useTaskStore((state) => state.addTask);
+  const [isAdd, setIsAdd] = React.useState(false);
+
+
+  const handleAddTask = () => {
+    // addTask({
+    //   id: '',
+    //   title: 'yam',
+    //   price: 10000,
+    //   status: id,
+    //   type: 'INDIVIDUAL'
+    // })
+    setIsAdd(true)
+    // console.log(title, id)
+  };
+  
+
+  // React.useEffect(() => {
+  //   if (columns.find((col) => col.title === name)) {
+  //     setErrorNameUsed(true);
+  //   } else {
+  //     setErrorNameUsed(false);
+  //   }
+  // }, [name, columns]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (title !== e.target.value && columns.find((col) => col.title === e.target.value)) {
+      setErrorNameUsed({
+        error: true,
+        title
+      });
+    } else {
+      setErrorNameUsed({
+        error: false,
+        title
+      });
+    }
+    setName(e.target.value);
+  };
+
+  const handleBlur = () => {
+    if (!errorNameUsed.error) {
+      updateCol(id, name);
+      setIsEditDisable(true);
+      toastUpdate()
+    }
+  };
+
+  const toastUpdate = () => {
+    toast({
+      title: 'Nama diubah',
+      variant: 'default',
+      description: `${title} diubah menjadi ${name}`
+    });
+  };
 
   return (
     <>
+     <NewTaskDialog open={isAdd} onClose={() => setIsAdd(false)} type='add'/>
       <form
         onSubmit={(e) => {
+          if (errorNameUsed.error) return;
           e.preventDefault();
-          setIsEditDisable(!editDisable);
+          setIsEditDisable(prev => !prev);
           updateCol(id, name);
-          toast({
-            title: 'Name Updated',
-            variant: 'default',
-            description: `${title} updated to ${name}`
-          });
+          toastUpdate()
         }}
       >
         <Input
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={handleChange}
           className="!mt-0 mr-auto text-base disabled:cursor-pointer disabled:border-none disabled:opacity-100"
           disabled={editDisable}
           ref={inputRef}
+          onBlur={handleBlur}
         />
       </form>
 
@@ -87,18 +147,19 @@ export function ColumnActions({
         <DropdownMenuContent align="end">
           <DropdownMenuItem
             onSelect={() => {
+              if (errorNameUsed.error) return;
               setIsEditDisable(prev => !prev);
               setTimeout(() => {
                 inputRef.current && inputRef.current?.focus();
               }, 500);
             }}
           >
-            {editDisable ? 'Rename' : 'Save Changes'}
+            {editDisable ? 'Ubah nama' : 'Simpan nama'}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
 
           <DropdownMenuItem
-            onSelect={() => setShowDeleteDialog(true)}
+            onSelect={() => handleAddTask()}
           // className="text-red-600"
           >
             Tambah item ({name})
@@ -106,9 +167,9 @@ export function ColumnActions({
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onSelect={() => setShowDeleteDialog(true)}
-            className="text-red-600"
+            className="text-red-600 font-semibold"
           >
-            Delete Section
+            Hapus ({title})
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -136,6 +197,7 @@ export function ColumnActions({
                 toast({
                   description: 'This column has been deleted.'
                 });
+
               }}
             >
               Delete
@@ -143,7 +205,6 @@ export function ColumnActions({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-
     </>
   );
 }

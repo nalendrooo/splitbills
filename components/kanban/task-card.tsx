@@ -1,12 +1,15 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Task } from '@/lib/store';
+import { Task, useTaskStore } from '@/lib/store';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { cva } from 'class-variance-authority';
 import { Ellipsis, GripVertical, Menu, Move } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu';
+import { formatRupiah } from '@/lib/format';
+import NewTaskDialog from './new-task-dialog';
+import { useState } from 'react';
 
 // export interface Task {
 //   id: UniqueIdentifier;
@@ -27,6 +30,13 @@ export interface TaskDragData {
 }
 
 export function TaskCard({ task, isOverlay }: TaskCardProps) {
+
+  const duplicateTask = useTaskStore((state) => state.duplicateTask);
+  const removeTask = useTaskStore((state) => state.removeTask);
+
+
+  const [isEdit, setIsEdit] = useState(false);
+
   const {
     setNodeRef,
     attributes,
@@ -59,6 +69,15 @@ export function TaskCard({ task, isOverlay }: TaskCardProps) {
     }
   });
 
+
+  const handleDuplicateTask = () => {
+    duplicateTask(task, task.id)
+  };
+
+  const handleRemoveTask = () => {
+    removeTask(task.id)
+  };
+
   return (
     <Card
       ref={setNodeRef}
@@ -67,6 +86,7 @@ export function TaskCard({ task, isOverlay }: TaskCardProps) {
         dragging: isOverlay ? 'overlay' : isDragging ? 'over' : undefined
       })}
     >
+      <NewTaskDialog open={isEdit} task={task} onClose={() => setIsEdit(false)} type='edit'/>
       <CardHeader className="space-between relative flex flex-row border-b-2 border-secondary px-3 py-3">
         <Button
           variant={'ghost'}
@@ -77,8 +97,8 @@ export function TaskCard({ task, isOverlay }: TaskCardProps) {
           <span className="sr-only">Move task</span>
           <GripVertical />
         </Button>
-        <Badge variant={'outline'} className="ml-auto font-semibold">
-          {task.description}
+        <Badge variant='outline' className="ml-auto font-semibold">
+          {formatRupiah(task.price)}
         </Badge>
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
@@ -89,33 +109,26 @@ export function TaskCard({ task, isOverlay }: TaskCardProps) {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem
-              // onSelect={() => {
-              //   setIsEditDisable(prev => !prev);
-              //   setTimeout(() => {
-              //     inputRef.current && inputRef.current?.focus();
-              //   }, 500);
-              // }}
+              onSelect={() => setIsEdit(true)}
               className='text-xs'
             >
-              {/* {editDisable ? 'Rename' : 'Save Changes'} */}
-
-              Edit
+              Ubah
             </DropdownMenuItem>
             <DropdownMenuSeparator />
 
             <DropdownMenuItem
-              // onSelect={() => setShowDeleteDialog(true)}
+              onSelect={handleDuplicateTask}
               className="text-xs"
             >
-              Duplicate
+              Duplikat
             </DropdownMenuItem>
             <DropdownMenuSeparator />
 
             <DropdownMenuItem
-              // onSelect={() => setShowDeleteDialog(true)}
+              onSelect={handleRemoveTask}
               className="text-red-600 text-xs"
             >
-              Delete
+              Hapus
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
