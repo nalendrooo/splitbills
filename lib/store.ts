@@ -9,10 +9,10 @@ import { UniqueIdentifier } from '@dnd-kit/core';
 export type TaskType = 'INDIVIDUAL' | 'ALL' | 'SEVERAL';
 
 const defaultCols = [
-  {
-    id: 'adil' as const,
-    title: 'adil'
-  }
+  // {
+  //   id: 'adil' as const,
+  //   title: 'adil'
+  // }
 ] satisfies Column[];
 
 export type ColumnId = (typeof defaultCols)[number]['id'];
@@ -32,20 +32,20 @@ export type State = {
 };
 
 const initialTasks: Task[] = [
-  {
-    id: 'task1',
-    status: 'adil',
-    title: 'Matcha Latte',
-    price: 20000,
-    type: 'INDIVIDUAL'
-  },
-  {
-    id: 'task2',
-    status: 'adil',
-    title: 'Ayam geprek (sambal matah)',
-    price: 10000,
-    type: 'INDIVIDUAL'
-  }
+  // {
+  //   id: 'task1',
+  //   status: 'adil',
+  //   title: 'Matcha Latte',
+  //   price: 20000,
+  //   type: 'INDIVIDUAL'
+  // },
+  // {
+  //   id: 'task2',
+  //   status: 'adil',
+  //   title: 'Ayam geprek (sambal matah)',
+  //   price: 10000,
+  //   type: 'INDIVIDUAL'
+  // }
 ];
 
 export type Actions = {
