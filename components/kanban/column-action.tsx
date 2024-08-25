@@ -117,7 +117,7 @@ export function ColumnActions({
 
   return (
     <>
-     <NewTaskDialog open={isAdd} onClose={() => setIsAdd(false)} type='add'/>
+     <NewTaskDialog open={isAdd} onClose={() => setIsAdd(false)} type='add' column={{id, title}}/>
       <form
         onSubmit={(e) => {
           if (errorNameUsed.error) return;
@@ -159,7 +159,7 @@ export function ColumnActions({
           <DropdownMenuSeparator />
 
           <DropdownMenuItem
-            onSelect={() => handleAddTask()}
+            onSelect={handleAddTask}
           // className="text-red-600"
           >
             Tambah item ({name})
@@ -178,10 +178,10 @@ export function ColumnActions({
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              Are you sure want to delete column?
+              Kamu yakin ingin menghapus {title}?
             </AlertDialogTitle>
             <AlertDialogDescription>
-              NOTE: All tasks related to this category will also be deleted.
+              Catatan: Setiap item {title} ini akan ikut terhapus!
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

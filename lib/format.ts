@@ -10,5 +10,5 @@ export const convertCurrencyToNumber = (currencyString: string) => {
 }
 
 export const formatRupiah = (number: number) => {
-    return `Rp. ${new Intl.NumberFormat('id-ID').format(number)}`
+    return `Rp. ${new Intl.NumberFormat('id-ID').format(number || 0)}`
 }

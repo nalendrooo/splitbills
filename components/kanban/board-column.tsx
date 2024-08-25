@@ -115,7 +115,7 @@ export function BoardColumn({ column, tasks, isOverlay }: BoardColumnProps) {
       </CardHeader>
       <CardContent className="flex flex-grow flex-col gap-4 overflow-x-hidden p-2">
         <div className='flex justify-between items-end'>
-          <p className='ml-2 font-semibold'>{formatRupiah(total)}</p>
+          <p className='ml-2 font-semibold'>{formatRupiah(Math.round(total))}</p>
           <p className='ml-2 text-xs font-semibold'>{totalItem} Item</p>
         </div>
         <ScrollArea className="h-full">

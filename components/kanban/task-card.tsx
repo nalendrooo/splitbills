@@ -86,7 +86,7 @@ export function TaskCard({ task, isOverlay }: TaskCardProps) {
         dragging: isOverlay ? 'overlay' : isDragging ? 'over' : undefined
       })}
     >
-      <NewTaskDialog open={isEdit} task={task} onClose={() => setIsEdit(false)} type='edit'/>
+      <NewTaskDialog open={isEdit} task={task} onClose={() => setIsEdit(false)} type='edit' column={{ id: task.status, title: task.status as string}} />
       <CardHeader className="space-between relative flex flex-row border-b-2 border-secondary px-3 py-3">
         <Button
           variant={'ghost'}
@@ -98,7 +98,7 @@ export function TaskCard({ task, isOverlay }: TaskCardProps) {
           <GripVertical />
         </Button>
         <Badge variant='outline' className="ml-auto font-semibold">
-          {formatRupiah(task.price)}
+          {formatRupiah(Math.round(task.price))}
         </Badge>
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>

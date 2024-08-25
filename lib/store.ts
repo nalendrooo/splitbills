@@ -58,6 +58,7 @@ export type Actions = {
   setTasks: (updatedTask: Task[]) => void;
   setCols: (cols: Column[]) => void;
   updateCol: (id: UniqueIdentifier, newName: string) => void;
+  updateTask: (id: UniqueIdentifier, task: Task) => void;
   resetTasks: () => void;
   resetCols: () => void;
 };
@@ -108,6 +109,10 @@ export const useTaskStore = create<State & Actions>()(
             ...task,
             status: task.status === id ? newName : task.status
           }))
+        })),
+      updateTask: (id, task) =>
+        set((state) => ({
+          tasks: state.tasks.map((t) => (t.id === id ? task : t))
         })),
       addCol: (title: string) =>
         set((state) => ({

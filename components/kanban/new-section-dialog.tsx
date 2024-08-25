@@ -21,7 +21,8 @@ export default function NewSectionDialog() {
   const [errorNameUsed, setErrorNameUsed] = useState(false);
   const [name, setName] = useState('')
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     if (errorNameUsed) return;
     addCol(name);
     setErrorNameUsed(false);
