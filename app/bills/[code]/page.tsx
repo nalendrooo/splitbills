@@ -9,7 +9,7 @@ const page = async ({ params }: any) => {
     // console.log(params)
     // console.log(data?.data?.data)
     return (
-        <div>page</div>
+        <div>{params.code}</div>
     )
 }
 
