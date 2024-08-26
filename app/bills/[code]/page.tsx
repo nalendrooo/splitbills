@@ -3,17 +3,17 @@ import axios from 'axios'
 import React from 'react'
 const page = async ({ params }: any) => {
     // const params = useParams()
-    const data = await GetBill(params.code)
+    // const data = await GetBill(params.code)
 
     // console.log(params.code)
     // console.log(params)
-    console.log(data?.data?.data)
+    // console.log(data?.data?.data)
     return (
         <div>page</div>
     )
 }
 
-function GetBill (code?: string){
+function GetBill(code?: string) {
 
     return axios.get('http://localhost:3000/api/bills/' + code)
 }
