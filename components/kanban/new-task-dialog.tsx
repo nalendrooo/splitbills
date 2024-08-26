@@ -11,12 +11,11 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '../ui/textarea';
-
-import { Task, TaskType, useTaskStore } from '@/lib/store';
-import { useEffect, useState } from 'react';
+import { initialItem } from '@/constants/kanban';
+import { Column, Task, TaskType } from '@/interfaces/kanban';
 import { convertCurrencyToNumber, formatRupiah } from '@/lib/format';
-import { Column } from './board-column';
+import { useTaskStore } from '@/lib/store';
+import { useEffect, useState } from 'react';
 
 interface NewTaskDialogProps {
   open: boolean
@@ -26,26 +25,17 @@ interface NewTaskDialogProps {
   task?: Task
 }
 
-export default function NewTaskDialog({
+export const NewTaskDialog = ({
   open,
   onClose,
   task,
   type,
   column
-}: NewTaskDialogProps) {
+}: NewTaskDialogProps) => {
   const addTask = useTaskStore((state) => state.addTask);
   const updateTask = useTaskStore((state) => state.updateTask);
 
-  const initialItem = {
-    title: '',
-    id: '',
-    price: 0,
-    status: '',
-    type: 'INDIVIDUAL' as TaskType
-  }
-
   const [item, setItem] = useState<Task>(initialItem);
-  // console.log(task)
 
   const handleSubmit = () => {
     if (task) {
@@ -67,7 +57,7 @@ export default function NewTaskDialog({
       } else {
         setItem({
           ...item,
-          status: column.id
+          status: column.status
         })
       }
     }
@@ -79,25 +69,19 @@ export default function NewTaskDialog({
         <DialogHeader>
           <DialogTitle>{type === 'add' ? 'Tambah item baru' : 'Ubah item Ayam'}</DialogTitle>
           <DialogDescription>
-            {type === 'add' ? `Mau nambahin item apa buat ${column?.title}?` : `Mau ubah item apa buat ${column?.title}?`}
+            {type === 'add' ? `Mau nambahin item apa buat ${column?.user}?` : `Mau ubah item apa buat ${column?.user}?`}
           </DialogDescription>
         </DialogHeader>
 
         <div className="grid grid-cols-2 items-center gap-4">
           <Input
-            id="title"
-            name="title"
             placeholder="Nama item..."
             value={item.title}
             onChange={(e) => setItem({ ...item, title: e.target.value })}
-          // className="col-span-2"
           />
           <Input
-            id="title"
-            name="title"
             value={formatRupiah(item.price)}
             onChange={(e) => setItem({ ...item, price: convertCurrencyToNumber(e.target.value) })}
-          // className="col-span-2"
           />
         </div>
 

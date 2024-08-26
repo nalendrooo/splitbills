@@ -1,21 +1,17 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Task, useTaskStore } from '@/lib/store';
+import { Task } from '@/interfaces/kanban';
+import { formatRupiah } from '@/lib/format';
+import { useTaskStore } from '@/lib/store';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { cva } from 'class-variance-authority';
-import { Ellipsis, GripVertical, Menu, Move } from 'lucide-react';
+import { Ellipsis, GripVertical } from 'lucide-react';
+import { useState } from 'react';
 import { Badge } from '../ui/badge';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu';
-import { formatRupiah } from '@/lib/format';
-import NewTaskDialog from './new-task-dialog';
-import { useState } from 'react';
+import { NewTaskDialog } from './new-task-dialog';
 
-// export interface Task {
-//   id: UniqueIdentifier;
-//   columnId: ColumnId;
-//   content: string;
-// }
 
 interface TaskCardProps {
   task: Task;
@@ -29,12 +25,10 @@ export interface TaskDragData {
   task: Task;
 }
 
-export function TaskCard({ task, isOverlay }: TaskCardProps) {
+export const TaskCard = ({ task, isOverlay }: TaskCardProps) => {
 
   const duplicateTask = useTaskStore((state) => state.duplicateTask);
   const removeTask = useTaskStore((state) => state.removeTask);
-
-
   const [isEdit, setIsEdit] = useState(false);
 
   const {
@@ -69,7 +63,6 @@ export function TaskCard({ task, isOverlay }: TaskCardProps) {
     }
   });
 
-
   const handleDuplicateTask = () => {
     duplicateTask(task, task.id)
   };
@@ -86,7 +79,7 @@ export function TaskCard({ task, isOverlay }: TaskCardProps) {
         dragging: isOverlay ? 'overlay' : isDragging ? 'over' : undefined
       })}
     >
-      <NewTaskDialog open={isEdit} task={task} onClose={() => setIsEdit(false)} type='edit' column={{ id: task.status, title: task.status as string}} />
+      <NewTaskDialog open={isEdit} task={task} onClose={() => setIsEdit(false)} type='edit' column={{ status: task.status, user: task.status as string }} />
       <CardHeader className="space-between relative flex flex-row border-b-2 border-secondary px-3 py-3">
         <Button
           variant={'ghost'}

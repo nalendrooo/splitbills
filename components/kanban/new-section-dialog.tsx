@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input';
 import { useTaskStore } from '@/lib/store';
 import { useState } from 'react';
 
-export default function NewSectionDialog() {
+export const NewSectionDialog = () => {
   const addCol = useTaskStore((state) => state.addCol);
   const columns = useTaskStore((state) => state.columns);
 
@@ -26,10 +26,11 @@ export default function NewSectionDialog() {
     if (errorNameUsed) return;
     addCol(name);
     setErrorNameUsed(false);
+    setName('');
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (columns.find((col) => col.title === e.target.value)) {
+    if (columns.find((col) => col.user === e.target.value)) {
       setErrorNameUsed(true);
     } else {
       setErrorNameUsed(false);
@@ -52,14 +53,12 @@ export default function NewSectionDialog() {
           </DialogDescription>
         </DialogHeader>
         <form
-          id="todo-form"
+          id='form-tambah-orang'
           className="grid gap-2 py-4"
           onSubmit={handleSubmit}
         >
           <div className="grid grid-cols-4 items-center gap-4">
             <Input
-              id="title"
-              name="title"
               placeholder="Nama temen kamu..."
               className="col-span-4"
               onChange={handleChange}
@@ -69,7 +68,7 @@ export default function NewSectionDialog() {
         </form>
         <DialogFooter>
           <DialogTrigger asChild>
-            <Button type="submit" size="sm" form="todo-form" disabled={errorNameUsed || !name}>
+            <Button type="submit" size="sm" form="form-tambah-orang" disabled={errorNameUsed || !name}>
               Tambah
             </Button>
           </DialogTrigger>

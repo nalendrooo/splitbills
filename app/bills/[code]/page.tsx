@@ -1,0 +1,22 @@
+import axios from 'axios'
+// import { useParams } from 'next/navigation'
+import React from 'react'
+
+const page = async ({ params }: any) => {
+    // const params = useParams()
+    const data = await GetBill(params.code)
+
+    // console.log(params.code)
+    // console.log(params)
+    console.log(data?.data?.data)
+    return (
+        <div>page</div>
+    )
+}
+
+export const GetBill = async (code?: string) => {
+
+    return axios.get('http://localhost:3000/api/bills/' + code)
+}
+
+export default page

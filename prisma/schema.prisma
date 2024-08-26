@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Bills {
+  code        String   @id
+  creator     String?
+  description String?
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  userBills UserBill[]
+  items     Items[]
+
+  @@map("bills")
+}
+
+model UserBill {
+  id     Int    @id @default(autoincrement())
+  status String @map("status")
+  user   String
+
+  billsCode String   @map("bills_code")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  items Items[]
+  code  Bills   @relation(fields: [billsCode], references: [code])
+
+  @@map("user_bills")
+}
+
+enum TaskType {
+  INDIVIDUAL
+  ALL
+  SEVERAL
+}
+
+model Items {
+  id     String   @id
+  title  String
+  price  Int
+  status String
+  type   TaskType
+  userId Int   @map("user_id")
+
+  billsCode String   @map("bills_code")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  userBill UserBill @relation(fields: [userId], references: [id])
+
+  code Bills @relation(fields: [billsCode], references: [code])
+
+  @@map("items")
+}

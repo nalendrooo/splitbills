@@ -1,59 +1,16 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '../ui/textarea';
-
-import { Task, useTaskStore } from '@/lib/store';
-import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '../ui/drawer';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Terminal } from 'lucide-react';
-import { Alert, AlertDescription } from '../ui/alert';
-import { Card, CardContent, CardHeader } from '../ui/card';
-import { Checkbox } from '../ui/checkbox';
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from "@/components/ui/tooltip"
-import { ScrollArea } from '../ui/scroll-area';
-import { Badge } from '../ui/badge';
-import { Separator } from '../ui/separator';
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useTaskStore } from '@/lib/store';
+import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from '../ui/drawer';
 import Individu from './AddItemDrawer/Individu';
-import SplitSemuaOrang from './AddItemDrawer/SplitSemuaOrang';
 import SplitBeberapaOrang from './AddItemDrawer/SplitBeberapaOrang';
-import { useState } from 'react';
+import SplitSemuaOrang from './AddItemDrawer/SplitSemuaOrang';
 
 
-export default function NewTaskDrawer() {
-    // const addTask = useTaskStore((state) => state.addTask);
+export const NewTaskDrawer = () => {
     const columns = useTaskStore((state) => state.columns);
-
-    const [item, setItem] = useState<Task[]>([])
-
-
-    const handleSubmit = () => {
-        console.log(item)
-        setItem([])
-        // e.preventDefault();
-
-        // const form = e.currentTarget;
-        // const formData = new FormData(form);
-        // const { title, description } = Object.fromEntries(formData);
-
-        // if (typeof title !== 'string' || typeof description !== 'string') return;
-        // addTask(title, description);
-    };
 
     return (
         <Drawer >
@@ -80,33 +37,16 @@ export default function NewTaskDrawer() {
                             <TabsTrigger value="split-beberapa-orang">Split beberapa orang</TabsTrigger>
                         </TabsList>
 
-
                         <Individu columns={columns} />
                         <SplitSemuaOrang columns={columns} />
                         <SplitBeberapaOrang columns={columns} />
 
                     </Tabs>
-
-
-                    {/* <DrawerFooter className='w-full'>
-                        <DrawerClose asChild>
-
-                            <Button onClick={() => handleSubmit()}>Tambah</Button>
-
-                        </DrawerClose>
-                        <DrawerClose asChild>
-
-                            <Button variant='outline' onClick={() => alert('cancel')}>Batal</Button>
-
-                        </DrawerClose>
-                    </DrawerFooter> */}
                 </div>
 
             </DrawerContent>
         </Drawer>
     )
-
-    //   return (
     //     <Dialog>
     //       <DialogTrigger asChild>
     //         <Button variant="secondary" size="sm">

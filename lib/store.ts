@@ -1,52 +1,9 @@
 import { create } from 'zustand';
 import { v4 as uuid } from 'uuid';
 import { persist } from 'zustand/middleware';
-import { Column } from '@/components/kanban/board-column';
 import { UniqueIdentifier } from '@dnd-kit/core';
-
-// export type Status = 'Nama' | 'IN_PROGRESS' | 'DONE';
-
-export type TaskType = 'INDIVIDUAL' | 'ALL' | 'SEVERAL';
-
-const defaultCols = [
-  // {
-  //   id: 'adil' as const,
-  //   title: 'adil'
-  // }
-] satisfies Column[];
-
-export type ColumnId = (typeof defaultCols)[number]['id'];
-
-export type Task = {
-  id: string;
-  title: string;
-  price: number;
-  status: UniqueIdentifier ;
-  type: TaskType
-};
-
-export type State = {
-  tasks: Task[];
-  columns: Column[];
-  draggedTask: string | null;
-};
-
-const initialTasks: Task[] = [
-  // {
-  //   id: 'task1',
-  //   status: 'adil',
-  //   title: 'Matcha Latte',
-  //   price: 20000,
-  //   type: 'INDIVIDUAL'
-  // },
-  // {
-  //   id: 'task2',
-  //   status: 'adil',
-  //   title: 'Ayam geprek (sambal matah)',
-  //   price: 10000,
-  //   type: 'INDIVIDUAL'
-  // }
-];
+import { Column, State, Task } from '@/interfaces/kanban';
+import { defaultCols, initialTasks } from '@/constants/kanban';
 
 export type Actions = {
   addTask: ({title, price, status, type}: Task) => void;
@@ -100,24 +57,24 @@ export const useTaskStore = create<State & Actions>()(
             tasks: updatedTasks,
           }
         }),
-      updateCol: (id: UniqueIdentifier, newName: string) =>
+      updateCol: (status: UniqueIdentifier, newName: string) =>
         set((state) => ({
           columns: state.columns.map((col) =>
-            col.id === id ? { ...col, title: newName, id: newName } : col
+            col.status === status ? { ...col, user: newName, status: newName } : col
           ),
           tasks: state.tasks.map((task) => ({
             ...task,
-            status: task.status === id ? newName : task.status
+            status: task.status === status ? newName : task.status
           }))
         })),
       updateTask: (id, task) =>
         set((state) => ({
           tasks: state.tasks.map((t) => (t.id === id ? task : t))
         })),
-      addCol: (title: string) =>
+      addCol: (user: string) =>
         set((state) => ({
           columns: [
-            { title, id: title },
+            { user, status: user },
             ...state.columns
           ]
         })),
@@ -128,7 +85,7 @@ export const useTaskStore = create<State & Actions>()(
         })),
       removeCol: (id: UniqueIdentifier) =>
         set((state) => ({
-          columns: state.columns.filter((col) => col.id !== id)
+          columns: state.columns.filter((col) => col.status !== id)
         })),
       setTasks: (newTasks: Task[]) => set({ tasks: newTasks }),
       setCols: (newCols: Column[]) => set({ columns: newCols }),

@@ -1,6 +1,4 @@
 'use client';
-// import { DotsHorizontalIcon } from '@radix-ui/react-icons';
-import * as React from 'react';
 
 import {
   AlertDialog,
@@ -20,88 +18,52 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { useToast } from '@/components/ui/use-toast';
-import { useTaskStore } from '@/lib/store';
-import { UniqueIdentifier } from '@dnd-kit/core';
-import { Input } from '../ui/input';
-import { Ellipsis, EllipsisVertical } from 'lucide-react';
-import { Badge } from '../ui/badge';
-import { useAtom } from 'jotai';
 import { errorNameUsedAtom } from '@/lib/stateman';
-import NewTaskDialog from './new-task-dialog';
+import { useTaskStore } from '@/lib/store';
+import { useAtom } from 'jotai';
+import { Ellipsis } from 'lucide-react';
+import { Input } from '../ui/input';
+import { NewTaskDialog } from './new-task-dialog';
+import { Fragment, useEffect, useRef, useState } from 'react';
+import { Column } from '@/interfaces/kanban';
 
-export function ColumnActions({
-  title,
-  id
-}: {
-  title: string;
-  id: UniqueIdentifier;
-}) {
-  const [open, setIsOpen] = React.useState(false);
-  const [name, setName] = React.useState(title);
+export const ColumnActions = ({
+  status,
+  user
+}: Column) => {
+
+  const [name, setName] = useState('');
   const updateCol = useTaskStore((state) => state.updateCol);
   const removeCol = useTaskStore((state) => state.removeCol);
-  const [editDisable, setIsEditDisable] = React.useState(true);
-  const [showDeleteDialog, setShowDeleteDialog] = React.useState(false);
-  const inputRef = React.useRef<HTMLInputElement>(null);
+  const [editDisable, setIsEditDisable] = useState(true);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
   const columns = useTaskStore((state) => state.columns);
-  // console.log(title)
-  // const name = columns.find((col) => col.id === id)?.title
-  // React.useEffect(() => {
-  //   if (columns.length === 1 && columns[0].title === 'Nama') {
-  //     setIsEditDisable(false);
-  //     setTimeout(() => {
-  //       inputRef.current && inputRef.current?.focus();
-  //     }, 500);
-  //   }
-  // }, []);
+
   const [errorNameUsed, setErrorNameUsed] = useAtom(errorNameUsedAtom);
-  // const [rename, setRename] = React.useState('');
 
-  const addTask = useTaskStore((state) => state.addTask);
-  const [isAdd, setIsAdd] = React.useState(false);
-
-
-  const handleAddTask = () => {
-    // addTask({
-    //   id: '',
-    //   title: 'yam',
-    //   price: 10000,
-    //   status: id,
-    //   type: 'INDIVIDUAL'
-    // })
-    setIsAdd(true)
-    // console.log(title, id)
-  };
-  
-
-  // React.useEffect(() => {
-  //   if (columns.find((col) => col.title === name)) {
-  //     setErrorNameUsed(true);
-  //   } else {
-  //     setErrorNameUsed(false);
-  //   }
-  // }, [name, columns]);
+  const [isAdd, setIsAdd] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (title !== e.target.value && columns.find((col) => col.title === e.target.value)) {
-      setErrorNameUsed({
-        error: true,
-        title
-      });
+    let error
+    if (user !== e.target.value && columns.find((col) => col.user === e.target.value)) {
+      error = true
     } else {
-      setErrorNameUsed({
-        error: false,
-        title
-      });
+      error = false
     }
+
+    setErrorNameUsed({
+      error,
+      user
+    });
     setName(e.target.value);
   };
 
   const handleBlur = () => {
     if (!errorNameUsed.error) {
-      updateCol(id, name);
+      updateCol(status, name);
       setIsEditDisable(true);
       toastUpdate()
     }
@@ -111,21 +73,36 @@ export function ColumnActions({
     toast({
       title: 'Nama diubah',
       variant: 'default',
-      description: `${title} diubah menjadi ${name}`
+      description: `${user} diubah menjadi ${name}`
     });
   };
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    if (errorNameUsed.error) return;
+    e.preventDefault();
+    setIsEditDisable(prev => !prev);
+    updateCol(status, name);
+    toastUpdate()
+  }
+
+  const handleDelete = () => {
+    setTimeout(() => (document.body.style.pointerEvents = ''), 100);
+    setShowDeleteDialog(false);
+    removeCol(status);
+    toast({
+      description: `${user} telah di hapus`,
+    });
+
+  }
+
+  useEffect(() => {
+    setName(user);
+  }, [user]);
   return (
-    <>
-     <NewTaskDialog open={isAdd} onClose={() => setIsAdd(false)} type='add' column={{id, title}}/>
+    <Fragment>
+      <NewTaskDialog open={isAdd} onClose={() => setIsAdd(false)} type='add' column={{ status, user }} />
       <form
-        onSubmit={(e) => {
-          if (errorNameUsed.error) return;
-          e.preventDefault();
-          setIsEditDisable(prev => !prev);
-          updateCol(id, name);
-          toastUpdate()
-        }}
+        onSubmit={handleSubmit}
       >
         <Input
           value={name}
@@ -159,8 +136,7 @@ export function ColumnActions({
           <DropdownMenuSeparator />
 
           <DropdownMenuItem
-            onSelect={handleAddTask}
-          // className="text-red-600"
+            onSelect={() => setIsAdd(true)}
           >
             Tambah item ({name})
           </DropdownMenuItem>
@@ -169,7 +145,7 @@ export function ColumnActions({
             onSelect={() => setShowDeleteDialog(true)}
             className="text-red-600 font-semibold"
           >
-            Hapus ({title})
+            Hapus ({user})
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -178,33 +154,23 @@ export function ColumnActions({
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              Kamu yakin ingin menghapus {title}?
+              Kamu yakin ingin menghapus {user}?
             </AlertDialogTitle>
             <AlertDialogDescription>
-              Catatan: Setiap item {title} ini akan ikut terhapus!
+              Catatan: Setiap item {user} ini akan ikut terhapus!
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <Button
               variant="destructive"
-              onClick={() => {
-                // yes, you have to set a timeout
-                setTimeout(() => (document.body.style.pointerEvents = ''), 100);
-
-                setShowDeleteDialog(false);
-                removeCol(id);
-                toast({
-                  description: 'This column has been deleted.'
-                });
-
-              }}
+              onClick={handleDelete}
             >
-              Delete
+              Hapus
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </>
+    </Fragment>
   );
 }

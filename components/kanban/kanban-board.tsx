@@ -1,8 +1,8 @@
 'use client';
+
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-
-import { Task, useTaskStore } from '@/lib/store';
+import { useTaskStore } from '@/lib/store';
 import { hasDraggableData } from '@/lib/utils';
 import {
   Announcements,
@@ -18,51 +18,29 @@ import {
   type DragStartEvent
 } from '@dnd-kit/core';
 import { SortableContext, arrayMove } from '@dnd-kit/sortable';
-import type { Column } from './board-column';
 import { BoardColumn, BoardContainer } from './board-column';
-// import NewSectionDialog from './new-section-dialog';
+import { Column, ColumnId, Task } from '@/interfaces/kanban';
 import { TaskCard } from './task-card';
-// import { coordinateGetter } from "./multipleContainersKeyboardPreset";
+import { useToast } from '../ui/use-toast';
 
-// const defaultCols = [
-//   // {
-//   //   id: 'Nama' as const,
-//   //   title: 'Nama'
-//   // },
-//   // {
-//   //   id: 'IN_PROGRESS' as const,
-//   //   title: 'In progress'
-//   // },
-//   // {
-//   //   id: 'DONE' as const,
-//   //   title: 'Done'
-//   // }
-// ] satisfies Column[];
-
-// export type ColumnId = (typeof defaultCols)[number]['id'];
-export type ColumnId = UniqueIdentifier;
-
-export function KanbanBoard() {
-  // const [columns, setColumns] = useState<Column[]>(defaultCols);
+export const KanbanBoard = () => {
+  const { toast } = useToast()
   const columns = useTaskStore((state) => state.columns);
   const setColumns = useTaskStore((state) => state.setCols);
-  const pickedUpTaskColumn = useRef<ColumnId | null>(null);
-  const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
-
-  // const [tasks, setTasks] = useState<Task[]>(initialTasks);
   const tasks = useTaskStore((state) => state.tasks);
   const setTasks = useTaskStore((state) => state.setTasks);
-  const [activeColumn, setActiveColumn] = useState<Column | null>(null);
-  const [isMounted, setIsMounted] = useState<Boolean>(false);
 
+  const pickedUpTaskColumn = useRef<ColumnId | null>(null);
+  const columnsId = useMemo(() => columns.map((col) => col.status), [columns]);
+
+  const [activeColumn, setActiveColumn] = useState<Column | null>(null);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
+
+  const [isMounted, setIsMounted] = useState<Boolean>(false);
 
   const sensors = useSensors(
     useSensor(MouseSensor),
     useSensor(TouchSensor)
-    // useSensor(KeyboardSensor, {
-    //   coordinateGetter: coordinateGetter,
-    // }),
   );
 
   useEffect(() => {
@@ -74,10 +52,10 @@ export function KanbanBoard() {
   }, []);
   if (!isMounted) return;
 
-  function getDraggingTaskData(taskId: UniqueIdentifier, columnId: ColumnId) {
+  const getDraggingTaskData = (taskId: UniqueIdentifier, columnId: ColumnId) => {
     const tasksInColumn = tasks.filter((task) => task.status === columnId);
     const taskPosition = tasksInColumn.findIndex((task) => task.id === taskId);
-    const column = columns.find((col) => col.id === columnId);
+    const column = columns.find((col) => col.status === columnId);
     return {
       tasksInColumn,
       taskPosition,
@@ -85,22 +63,34 @@ export function KanbanBoard() {
     };
   }
 
+
+  const handleToast = (text?: string) => {
+    toast({
+      title: 'Nama diubah',
+      variant: 'default',
+      description: `sasas`
+    });
+  }
+
   const announcements: Announcements = {
     onDragStart({ active }) {
+      // console.log(active)
       if (!hasDraggableData(active)) return;
+
       if (active.data.current?.type === 'Column') {
-        const startColumnIdx = columnsId.findIndex((id) => id === active.id);
+        const startColumnIdx = columnsId.findIndex((status) => status === active.id);
         const startColumn = columns[startColumnIdx];
-        return `Picked up Column ${startColumn?.title} at position: ${startColumnIdx + 1
+
+        return `Picked up Column ${startColumn?.user} at position: ${startColumnIdx + 1
           } of ${columnsId.length}`;
       } else if (active.data.current?.type === 'Task') {
         pickedUpTaskColumn.current = active.data.current.task.status;
         const { tasksInColumn, taskPosition, column } = getDraggingTaskData(
           active.id,
-          pickedUpTaskColumn.current
+          pickedUpTaskColumn.current as ColumnId
         );
         return `Picked up Task ${active.data.current.task.title} at position: ${taskPosition + 1
-          } of ${tasksInColumn.length} in column ${column?.title}`;
+          } of ${tasksInColumn.length} in column ${column?.user}`;
       }
     },
     onDragOver({ active, over }) {
@@ -111,7 +101,7 @@ export function KanbanBoard() {
         over.data.current?.type === 'Column'
       ) {
         const overColumnIdx = columnsId.findIndex((id) => id === over.id);
-        return `Column ${active.data.current.column.title} was moved over ${over.data.current.column.title
+        return `Column ${active.data.current.column.user} was moved over ${over.data.current.column.user
           } at position ${overColumnIdx + 1} of ${columnsId.length}`;
       } else if (
         active.data.current?.type === 'Task' &&
@@ -123,14 +113,15 @@ export function KanbanBoard() {
         );
         if (over.data.current.task.status !== pickedUpTaskColumn.current) {
           return `Task ${active.data.current.task.title
-            } was moved over column ${column?.title} in position ${taskPosition + 1
+            } was moved over column ${column?.user} in position ${taskPosition + 1
             } of ${tasksInColumn.length}`;
         }
         return `Task was moved over position ${taskPosition + 1} of ${tasksInColumn.length
-          } in column ${column?.title}`;
+          } in column ${column?.user}`;
       }
     },
     onDragEnd({ active, over }) {
+
       if (!hasDraggableData(active) || !hasDraggableData(over)) {
         pickedUpTaskColumn.current = null;
         return;
@@ -141,7 +132,7 @@ export function KanbanBoard() {
       ) {
         const overColumnPosition = columnsId.findIndex((id) => id === over.id);
 
-        return `Column ${active.data.current.column.title
+        return `Column ${active.data.current.column.user
           } was dropped into position ${overColumnPosition + 1} of ${columnsId.length
           }`;
       } else if (
@@ -153,11 +144,13 @@ export function KanbanBoard() {
           over.data.current.task.status
         );
         if (over.data.current.task.status !== pickedUpTaskColumn.current) {
-          return `Task was dropped into column ${column?.title} in position ${taskPosition + 1
+          // handleToast(`Task was dropped into column ${column?.user} in position ${taskPosition + 1
+          //   } of ${tasksInColumn.length}`)
+          return `Task was dropped into column ${column?.user} in position ${taskPosition + 1
             } of ${tasksInColumn.length}`;
         }
         return `Task was dropped into position ${taskPosition + 1} of ${tasksInColumn.length
-          } in column ${column?.title}`;
+          } in column ${column?.user}`;
       }
       pickedUpTaskColumn.current = null;
     },
@@ -168,53 +161,7 @@ export function KanbanBoard() {
     }
   };
 
-  return (
-    <DndContext
-      accessibility={{
-        announcements
-      }}
-      sensors={sensors}
-      onDragStart={onDragStart}
-      onDragEnd={onDragEnd}
-      onDragOver={onDragOver}
-    >
-      <BoardContainer>
-        <SortableContext items={columnsId}>
-          {columns?.map((col, index) => (
-            <Fragment key={col.id}>
-              <BoardColumn
-                column={col}
-                tasks={tasks.filter((task) => task.status === col.id)}
-              />
-              {/* {index === columns?.length - 1 && (
-                <div className="w-[300px]">
-                  <NewSectionDialog />
-                </div>
-              )} */}
-            </Fragment>
-          ))}
-          {/* {!columns.length && <NewSectionDialog />} */}
-        </SortableContext>
-      </BoardContainer>
-
-      {'document' in window &&
-        createPortal(
-          <DragOverlay>
-            {activeColumn && (
-              <BoardColumn
-                isOverlay
-                column={activeColumn}
-                tasks={tasks.filter((task) => task.status === activeColumn.id)}
-              />
-            )}
-            {activeTask && <TaskCard task={activeTask} isOverlay />}
-          </DragOverlay>,
-          document.body
-        )}
-    </DndContext>
-  );
-
-  function onDragStart(event: DragStartEvent) {
+  const onDragStart = (event: DragStartEvent) => {
     if (!hasDraggableData(event.active)) return;
     const data = event.active.data.current;
     if (data?.type === 'Column') {
@@ -228,7 +175,7 @@ export function KanbanBoard() {
     }
   }
 
-  function onDragEnd(event: DragEndEvent) {
+  const onDragEnd = (event: DragEndEvent) => {
     setActiveColumn(null);
     setActiveTask(null);
 
@@ -247,14 +194,14 @@ export function KanbanBoard() {
     const isActiveAColumn = activeData?.type === 'Column';
     if (!isActiveAColumn) return;
 
-    const activeColumnIndex = columns.findIndex((col) => col.id === activeId);
+    const activeColumnIndex = columns.findIndex((col) => col.status === activeId);
 
-    const overColumnIndex = columns.findIndex((col) => col.id === overId);
+    const overColumnIndex = columns.findIndex((col) => col.status === overId);
 
     setColumns(arrayMove(columns, activeColumnIndex, overColumnIndex));
   }
 
-  function onDragOver(event: DragOverEvent) {
+  const onDragOver = (event: DragOverEvent) => {
     const { active, over } = event;
     if (!over) return;
 
@@ -299,4 +246,45 @@ export function KanbanBoard() {
       }
     }
   }
+
+  return (
+    <DndContext
+      accessibility={{
+        announcements
+      }}
+      sensors={sensors}
+      onDragStart={onDragStart}
+      onDragEnd={onDragEnd}
+      onDragOver={onDragOver}
+    >
+      <BoardContainer>
+        <SortableContext items={columnsId}>
+          {columns?.map((col) => (
+            <Fragment key={col.status}>
+              <BoardColumn
+                column={col}
+                tasks={tasks.filter((task) => task.status === col.status)}
+              />
+            </Fragment>
+          ))}
+        </SortableContext>
+      </BoardContainer>
+
+      {'document' in window &&
+        createPortal(
+          <DragOverlay>
+            {activeColumn && (
+              <BoardColumn
+                isOverlay
+                column={activeColumn}
+                tasks={tasks.filter((task) => task.status === activeColumn.status)}
+              />
+            )}
+            {activeTask && <TaskCard task={activeTask} isOverlay />}
+          </DragOverlay>,
+          document.body
+        )}
+    </DndContext>
+  );
+
 }

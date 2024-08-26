@@ -1,39 +1,26 @@
-import { Task } from '@/lib/store';
-import { useDndContext, type UniqueIdentifier } from '@dnd-kit/core';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import { Column, ColumnDragData, Task } from '@/interfaces/kanban';
+import { formatRupiah } from '@/lib/format';
+import { errorNameUsedAtom } from '@/lib/stateman';
+import { useDndContext } from '@dnd-kit/core';
 import { SortableContext, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { cva } from 'class-variance-authority';
+import { useAtomValue } from 'jotai';
 import { GripVertical } from 'lucide-react';
 import { useMemo } from 'react';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader } from '../ui/card';
 import { ColumnActions } from './column-action';
 import { TaskCard } from './task-card';
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
-import { Badge } from '../ui/badge';
-import { useAtomValue } from 'jotai';
-import { errorNameUsedAtom } from '@/lib/stateman';
-import { formatRupiah } from '@/lib/format';
 
-export interface Column {
-  id: UniqueIdentifier;
-  title: string;
-}
-
-export type ColumnType = 'Column';
-
-export interface ColumnDragData {
-  type: ColumnType;
-  column: Column;
-}
-
-interface BoardColumnProps {
+interface IPropsBoardColumn {
   column: Column;
   tasks: Task[];
   isOverlay?: boolean;
 }
 
-export function BoardColumn({ column, tasks, isOverlay }: BoardColumnProps) {
+export const BoardColumn = ({ column, tasks, isOverlay }: IPropsBoardColumn) => {
 
   const errorNameUsed = useAtomValue(errorNameUsedAtom)
 
@@ -49,13 +36,13 @@ export function BoardColumn({ column, tasks, isOverlay }: BoardColumnProps) {
     transition,
     isDragging
   } = useSortable({
-    id: column.id,
+    id: column.status,
     data: {
       type: 'Column',
       column
     } satisfies ColumnDragData,
     attributes: {
-      roleDescription: `Column: ${column.title}`
+      roleDescription: `Column: ${column.user}`
     }
   });
 
@@ -78,7 +65,7 @@ export function BoardColumn({ column, tasks, isOverlay }: BoardColumnProps) {
   );
 
   const total = tasks.map((task) => task.price).reduce((a, b) => a + b, 0);
-  const totalItem = tasks.map((task) => task.status === column.id).length
+  const totalItem = tasks.map((task) => task.status === column.status).length
 
   return (
     <Card
@@ -89,7 +76,7 @@ export function BoardColumn({ column, tasks, isOverlay }: BoardColumnProps) {
       })}
     >
       <CardHeader className="space-between flex flex-col items-center border-b-2 p-4 text-left font-semibold ">
-        {/* <div className="flex flex-row items-center gap-2"> */}
+
         <div className='flex '>
 
           <Button
@@ -98,19 +85,19 @@ export function BoardColumn({ column, tasks, isOverlay }: BoardColumnProps) {
             {...listeners}
             className=" relative -ml-2 h-auto cursor-grab p-1 text-primary/50"
           >
-            <span className="sr-only">{`Move column: ${column.title}`}</span>
+            <span className="sr-only">{`Move column: ${column.user}`}</span>
             <GripVertical />
           </Button>
-          {/* <span className="mr-auto !mt-0"> {column.title}</span> */}
-          {/* <Input
-          defaultValue={column.title}
-          className="text-base !mt-0 mr-auto"
-          /> */}
-          <ColumnActions id={column.id} title={column.title} />
-          {/* </div> */}
+
+          <ColumnActions status={column.status} user={column.user} />
+
         </div>
         <div className='w-full ps-6'>
-          {errorNameUsed.error && (column.title === errorNameUsed.title) && <p className='text-red-600 text-start text-xs pt-2'>Error: Nama sudah digunakan</p>}
+          {
+            errorNameUsed.error &&
+            (column.user === errorNameUsed.user) &&
+            <p className='text-red-600 text-start text-xs pt-2'>Error: Nama sudah digunakan</p>
+          }
         </div>
       </CardHeader>
       <CardContent className="flex flex-grow flex-col gap-4 overflow-x-hidden p-2">
@@ -130,10 +117,10 @@ export function BoardColumn({ column, tasks, isOverlay }: BoardColumnProps) {
   );
 }
 
-export function BoardContainer({ children }: { children: React.ReactNode }) {
+export const BoardContainer = ({ children }: { children: React.ReactNode }) => {
   const dndContext = useDndContext();
 
-  const variations = cva('px-2  pb-4 md:px-0 flex lg:justify-start', {
+  const variations = cva(' pb-4 md:px-0 flex lg:justify-start', {
     variants: {
       dragging: {
         default: '',
@@ -153,7 +140,6 @@ export function BoardContainer({ children }: { children: React.ReactNode }) {
           {children}
         </div>
       </div>
-
       <ScrollBar orientation="horizontal" />
     </ScrollArea>
   );
