@@ -16,7 +16,7 @@ const page = async ({ params }: any) => {
 function GetBill(code?: string) {
     if (!code) return
 
-    return axios.get('http://localhost:3000/api/bills/5MSDVM')
+    return axios.get('http://localhost:3000/api/bills/' + code)
 }
 
 export default page
