@@ -21,7 +21,7 @@ const page = async ({ params }: any) => {
 function GetBill(code?: string) {
     if (!code) return
 
-    return axios.get('http://localhost:3000/api/bills/' + code)
+    return axios.get('https://splitbills-beta.vercel.app/api/bills/' + code)
 }
 
 export default page
