@@ -3,11 +3,16 @@ import axios from 'axios'
 import React from 'react'
 const page = async ({ params }: any) => {
     // const params = useParams()
-    const data = await GetBill(params?.code)
+    try {
+
+        const data = await GetBill(params?.code)
+        console.log(data?.data?.data)
+    } catch (error) {
+        console.log(error)
+    }
 
     // console.log(params.code)
     // console.log(params)
-    console.log(data?.data?.data)
     return (
         <div>{params.code}</div>
     )
