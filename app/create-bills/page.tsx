@@ -16,7 +16,7 @@ import { Fragment } from 'react';
 
 const breadcrumbItems = [
   { title: 'Home', link: '/' },
-  { title: 'Create bills', link: '/bills' }
+  { title: 'Buat bills', link: '/create-bills' }
 ];
 
 export default function page() {
