@@ -15,7 +15,7 @@ import { useTaskStore } from '@/lib/store';
 import { Fragment } from 'react';
 
 const breadcrumbItems = [
-  { title: 'Dashboard', link: '/' },
+  { title: 'Home', link: '/' },
   { title: 'Create bills', link: '/bills' }
 ];
 

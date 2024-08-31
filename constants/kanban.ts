@@ -32,3 +32,26 @@ export const initialTasks: Task[] = [
     //   type: 'INDIVIDUAL'
     // }
   ];
+export const initialTasks2: Task[] = [
+    {
+      id: 'task1',
+      status: 'adil',
+      title: 'Matcha Latte',
+      price: 20000,
+      type: 'INDIVIDUAL'
+    },
+    {
+      id: 'task2',
+      status: 'adil',
+      title: 'Ayam geprek (sambal matah)',
+      price: 10000,
+      type: 'INDIVIDUAL'
+    }
+  ];
+
+  export const defaultCols2: Column[] = [
+    {
+    status: 'adil' as const,
+      user: 'adil'
+    }
+  ] satisfies Column[];

@@ -1,3 +1,4 @@
+'use client'
 import { GripVertical, X } from 'lucide-react'
 import React from 'react'
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert'
