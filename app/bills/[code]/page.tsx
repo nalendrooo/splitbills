@@ -40,7 +40,7 @@ const page = async ({ params }: any) => {
     // console.log(params.code)
     // console.log(params)
     const variants = cva(
-        'h-[75vh] max-h-[75vh] w-[300px] max-w-full bg-secondary flex flex-col flex-shrink-0 snap-center',
+        'h-[75vh] max-h-[75vh] w-full sm:w-[300px] max-w-full bg-secondary flex flex-col flex-shrink-0 snap-center',
         {
             variants: {
                 dragging: {
